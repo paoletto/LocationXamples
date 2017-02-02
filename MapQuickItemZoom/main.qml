@@ -16,7 +16,7 @@ Window {
         id: plugins
     }
 
-    Map {
+    MapWithSliders {
         id: map
         anchors.fill: parent
         opacity: 1.0
@@ -30,18 +30,5 @@ Window {
         MapQuickItemQt {
             zoomLevel: 2.5
         }
-    }
-
-    MapCrosshair {
-        width: 20
-        height: 20
-        anchors.centerIn: parent
-        z: map.z + 1
-    }
-
-    MapSliders {
-        id: sliders
-        z: map.z + 1
-        map: map
     }
 }

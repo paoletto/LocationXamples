@@ -7,7 +7,8 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-    registerLocationComponents(engine, LOCATION_COMPONENTS_PWD);
+    //engine.addImportPath("/media/paolo/qdata/home/paolo/Qt/Location/playground/LocationXamples");
+    registerLocationComponents(engine);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     return app.exec();
