@@ -1,0 +1,16 @@
+ 
+module LocationComponents
+LocationTools                       1.0 LocationTools.js
+GeoservicePlugins                   1.0 GeoservicePlugins.qml
+MapSliders                          1.0 MapSliders.qml
+MapQuickItemQt                      1.0 MapQuickItemQt.qml
+MapPolylineUSA                      1.0 MapPolylineUSA.qml
+MapPolygonSelfIntersecting          1.0 MapPolygonSelfIntersecting.qml
+MapItemGroupFlower                  1.0 MapItemGroupFlower.qml
+MapCrosshair                        1.0 MapCrosshair.qml
+MapCircleWithBoundingBox            1.0 MapCircleWithBoundingBox.qml
+MapCircleSouthPole                  1.0 MapCircleSouthPole.qml
+MapCircleNorthPole                  1.0 MapCircleNorthPole.qml
+MapCircleBothPoles                  1.0 MapCircleBothPoles.qml
+MapWithSliders                      1.0 MapWithSliders.qml
+
