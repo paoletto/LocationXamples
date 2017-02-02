@@ -16,7 +16,7 @@ Window {
         id: plugins
     }
 
-    Map {
+    MapWithSliders {
         id: map
         gesture.enabled: true
         objectName: "mapComponent"
@@ -33,11 +33,5 @@ Window {
         MapItemGroupFlower {
             id: itemGroup
         }
-    }
-
-    MapSliders {
-        id: sliders
-        z: map.z + 1
-        map: map
     }
 }

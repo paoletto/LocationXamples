@@ -1,17 +1,18 @@
 #ifndef LOCATIONCOMPONENTS_H
 #define LOCATIONCOMPONENTS_H
 
-#include "qmlenvironmentvariable.h"
+#include "qmlsystemenvironment.h"
 #include <QDebug>
 
-#define FOO "/media/paolo/qdata/home/paolo/Qt/Location/playground/LocationXamples"
+#define str(x) #x
+#define xstr(x) str(x)
 
 #define registerLocationComponents(engine) \
     { \
-        qDebug() << LOCATION_COMPONENTS_PWD; \
-        engine.addImportPath(LOCATION_COMPONENTS_PWD); \
-        qmlRegisterSingletonType<QmlEnvironmentVariable>("LocationComponents", 1, 0, \
-                "EnvironmentVariable", qmlenvironmentvariable_singletontype_provider); \
+        qDebug() << xstr(LOCATION_COMPONENTS_PWD); \
+        engine.addImportPath(xstr(LOCATION_COMPONENTS_PWD)); \
+        qmlRegisterSingletonType<QmlSystemEnvironment>("LocationComponents", 1, 0, \
+                "SystemEnvironment", qmlsystemenvironment_singletontype_provider); \
     }
 
 #endif

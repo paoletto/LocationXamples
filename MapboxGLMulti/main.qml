@@ -20,7 +20,7 @@ Window {
         id: mapBase
         opacity: 1.0
         anchors.fill: parent
-        plugin: mapboxglPlugin
+        plugin: plugins.mapboxgl
         activeMapType: mapBase.supportedMapTypes[4]
         gesture.enabled: false
         center: map.center
@@ -39,7 +39,7 @@ Window {
         anchors.fill: parent
         opacity: 0.6
         color: 'transparent'
-        plugin: mapboxglPlugin
+        plugin: plugins.mapboxgl
         center: QtPositioning.coordinate(45,10)
         activeMapType: map.supportedMapTypes[0]
         zoomLevel: 4
@@ -53,9 +53,10 @@ Window {
         map: map
     }
 
-    Plugin {
-        id: mapboxglPlugin
-        name: "mapboxgl"
-        PluginParameter{ name: "mapboxgl.access_token"; value: "pk.eyJ1IjoicGFvbG9hbmdlbGVsbGkiLCJhIjoiY2lwZnVjOGU1MDAwaXYzbWFsZ2V0ZXFsdiJ9.NsU1t5hyWCJazAvIK3DASw"}
+    MapCrosshair {
+        width: 20
+        height: 20
+        anchors.centerIn: parent
+        z: map.z + 1
     }
 }

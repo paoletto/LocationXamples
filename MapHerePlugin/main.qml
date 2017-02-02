@@ -10,7 +10,6 @@ Window {
     visible: true
     width: 640
     height: 640
-    property var copyVisible : false
 
     GeoservicePlugins {
         id: plugins
@@ -18,20 +17,12 @@ Window {
 
     MapWithSliders {
         id: map
-        gesture.enabled: true
-        objectName: "mapComponent"
         anchors.fill: parent
         opacity: 1.0
         color: 'transparent'
-        plugin: plugins.osm
+        plugin: plugins.here
         center: QtPositioning.coordinate(45,10)
-        activeMapType: map.supportedMapTypes[2]
+        activeMapType: map.supportedMapTypes[0]
         zoomLevel: 4
-        z : parent.z + 1
-        copyrightsVisible: win.copyVisible
-
-        MapPolygonSelfIntersecting {
-            id: selfIntersectingPolygon
-        }
     }
 }

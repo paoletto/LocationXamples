@@ -1,8 +1,8 @@
 INCLUDEPATH += ../LocationComponents
 
 DEFINES += LOCATION_COMPONENTS_PWD="\"$$PWD/.."\"
-message($$DEFINES)
-HEADERS += ../LocationComponents/qmlenvironmentvariable.h \
+#message($$DEFINES)
+HEADERS += ../LocationComponents/qmlsystemenvironment.h \
            ../LocationComponents/locationcomponents.h
 
-SOURCES += ../LocationComponents/qmlenvironmentvariable.cpp
+SOURCES += ../LocationComponents/qmlsystemenvironment.cpp

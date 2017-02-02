@@ -1,3 +1,4 @@
+#include "locationcomponents.h"
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
