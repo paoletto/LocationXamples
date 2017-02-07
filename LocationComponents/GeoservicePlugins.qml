@@ -33,14 +33,35 @@ Item {
         PluginParameter{ name: "osm.mapping.highdpi_tiles"; value: true}
     }
 
-    property var mapboxPlugin
+
     property var mapboxglPlugin
     property var herePlugin
 
     property var mapboxPluginHiDpi
     property var herePluginHiDpi
 
+// DOESNT WORK
+//    Plugin {
+//        id: mapboxPlugin
+//        name: 'mapboxgl';
+//        PluginParameter {
+//            name: "mapboxgl.access_token"
+//            value: SystemEnvironment.variable("MAPBOX_ACCESS_TOKEN")
+//        }
+//    }
+    property var mapboxPlugin
     onMapboxAccessTokenChanged: {
+        mapboxPlugin = Qt.createQmlObject(
+                   "import QtQuick 2.4;
+                    import QtLocation 5.9;
+                    Plugin {
+                        name: 'mapbox';
+                        PluginParameter {
+                            name: \"mapbox.access_token\" ;
+                            value: '"+mapboxAccessToken+"';
+                        }
+                    }", win, "");
+
         mapboxglPlugin = Qt.createQmlObject(
                    "import QtQuick 2.4;
                     import QtLocation 5.9;
@@ -52,16 +73,6 @@ Item {
                         }
                     }", win, "");
 
-        mapboxPlugin = Qt.createQmlObject(
-                   "import QtQuick 2.4;
-                    import QtLocation 5.9;
-                    Plugin {
-                        name: 'mapbox';
-                        PluginParameter {
-                            name: \"mapbox.access_token\" ;
-                            value: '"+mapboxAccessToken+"';
-                        }
-                    }", win, "");
         mapboxPluginHiDpi = Qt.createQmlObject(
                    "import QtQuick 2.4;
                     import QtLocation 5.9;
