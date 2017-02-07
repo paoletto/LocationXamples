@@ -10,6 +10,7 @@
 #define registerLocationComponents(engine) \
     { \
         qDebug() << xstr(LOCATION_COMPONENTS_PWD); \
+        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling); \
         engine.addImportPath(xstr(LOCATION_COMPONENTS_PWD)); \
         qmlRegisterSingletonType<QmlSystemEnvironment>("LocationComponents", 1, 0, \
                 "SystemEnvironment", qmlsystemenvironment_singletontype_provider); \

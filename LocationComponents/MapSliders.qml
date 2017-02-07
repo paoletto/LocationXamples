@@ -1,284 +1,245 @@
-import QtQuick 2.4
+import QtQuick 2.6
 import QtQuick.Controls 1.4
 
 Rectangle {
-    id: sliderContainer
-    z : parent.z + 10
+    id: containerRow
     anchors.top: parent.top
     anchors.bottom: parent.bottom
     anchors.right: parent.right
-    width: sliderRow.width + 40
-    //visible: sliderToggler.checked
-    color: Qt.rgba( 0, 191 / 255.0, 255 / 255.0, 0.1)
+    width: sliderContainer.width
 
     property var map
+    property var fontSize : 14
+    property var labelBackground : "transparent"
 
-    // the sliders value
     Rectangle {
-        id: rowSlidersValuesContainer
-        height: 50
-        color: "transparent"
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.left: parent.left
-        anchors.topMargin: 10
-        anchors.rightMargin: 25
-        anchors.leftMargin: 20
-        anchors.bottomMargin: 0
-        Row {
-            id: rowSliderValues
+        id: sliderContainer
+        height: parent.height
+        width: sliderRow.width + 40
+        //visible: sliderToggler.checked
+        color: Qt.rgba( 0, 191 / 255.0, 255 / 255.0, 0.1)
+        border.color: "blue"
+        property var slidersHeight : sliderContainer.height
+                                     - rowSliderValues.height
+                                     - rowSliderLabels.height
+                                     - sliderColumn.spacing * 2
+                                     - sliderColumn.topPadding
+                                     - sliderColumn.bottomPadding
+
+        Rectangle {
+            color: "yellow"
+            anchors.fill: sliderColumn
+        }
+
+        Column {
+            id: sliderColumn
             spacing: 16
-            anchors.fill : parent
+            topPadding: 16
+            bottomPadding: 16
+            anchors.centerIn: parent
 
-            property var fontSize : 14
-            property var rectangleColor : "transparent"
+            // the sliders value labels
+//            Rectangle {
+//                id: rowSlidersValuesContainer
+//                height: 50
+//                width: sliderRow.width
+//                color: "transparent"
 
-            Rectangle{
-                color: parent.rectangleColor
-                width: labelZoomValue.height
-                height: labelZoomValue.width
-                anchors.verticalCenter: parent.verticalCenter
-                Label {
-                    id: labelZoomValue
-                    text: zoomSlider.value.toFixed(3)
-                    font.pixelSize: rowSliderLabels.fontSize
-                    rotation: -90
-    //                transform: Rotation {
-    //                    angle: -90
-    //                } // rotate this text item
-                    anchors.centerIn: parent
+                Row {
+                    id: rowSliderValues
+                    spacing: sliderRow.spacing
+                    width: sliderRow.width
+//                    property int itemCount: 4
+//                    property real totalSpacing: (itemCount - 1) * spacing
+//                    property real availableWidth: rowSliderValues.width - totalSpacing
+//                    property var entryWidth : availableWidth / itemCount
+                    property real entryWidth: zoomSlider.width
+                    property real entryHeight: 32 // Doesn't matter probably
+
+                    Rectangle{
+                        color: labelBackground
+                        height: parent.entryHeight
+                        width: parent.entryWidth
+                        border.color: "red"
+                        Label {
+                            id: labelZoomValue
+                            text: zoomSlider.value.toFixed(3)
+                            font.pixelSize: fontSize
+                            rotation: -90
+                            anchors.centerIn: parent
+                        }
+                    }
+                    Rectangle{
+                        color: labelBackground
+                        height: parent.entryHeight
+                        width: parent.entryWidth
+                        border.color: "red"
+                        Label {
+                            id: labelBearingValue
+                            text: bearingSlider.value.toFixed(2)
+                            font.pixelSize: fontSize
+                            rotation: -90
+                            anchors.centerIn: parent
+                        }
+                    }
+                    Rectangle{
+                        color: labelBackground
+                        height: parent.entryHeight
+                        width: parent.entryWidth
+                        border.color: "red"
+                        Label {
+                            id: labelTiltValue
+                            text: tiltSlider.value.toFixed(2)
+                            font.pixelSize: fontSize
+                            rotation: -90
+                            anchors.centerIn: parent
+                        }
+                    }
+                    Rectangle{
+                        color: labelBackground
+                        height: parent.entryHeight
+                        width: parent.entryWidth
+                        border.color: "red"
+                        Label {
+                            id: labelFovValue
+                            text: fovSlider.value.toFixed(2)
+                            font.pixelSize: fontSize
+                            rotation: -90
+                            anchors.centerIn: parent
+                        }
+                    }
+                } // rowSliderValues
+//            } // rowSlidersValuesContainer
+
+            // The sliders row
+            Row {
+                spacing: 20
+                id: sliderRow
+                height: sliderContainer.slidersHeight
+
+                Slider {
+                    id: zoomSlider;
+                    height: parent.height
+                    orientation : Qt.Vertical
+                    onValueChanged: {
+                            containerRow.map.zoomLevel = value
+                    }
+                    Component.onCompleted: {
+                        minimumValue = Qt.binding(function() { return containerRow.map.minimumZoomLevel; })
+                        maximumValue = Qt.binding(function() { return containerRow.map.maximumZoomLevel; })
+                        value = Qt.binding(function() { return containerRow.map.zoomLevel; })
+                    }
                 }
-            }
-
-            Rectangle{
-                color: parent.rectangleColor
-                width: labelBearingValue.height
-                height: labelBearingValue.width
-                anchors.verticalCenter: parent.verticalCenter
-                Label {
-                    id: labelBearingValue
-                    text: bearingSlider.value.toFixed(2)
-                    font.pixelSize: rowSliderLabels.fontSize
-                    rotation: -90
-                    anchors.centerIn: parent
+                Slider {
+                    id: bearingSlider;
+                    height: parent.height
+                    minimumValue: 0;
+                    maximumValue: 360;
+                    orientation : Qt.Vertical
+                    value: containerRow.map.bearing
+                    onValueChanged: {
+                        containerRow.map.bearing = value;
+                    }
                 }
-            }
-            Rectangle{
-                color: parent.rectangleColor
-                width: labelTiltValue.height
-                height: labelTiltValue.width
-                anchors.verticalCenter: parent.verticalCenter
-                Label {
-                    id: labelTiltValue
-                    text: tiltSlider.value.toFixed(2)
-                    font.pixelSize: rowSliderLabels.fontSize
-                    rotation: -90
-                    anchors.centerIn: parent
+                Slider {
+                    id: tiltSlider;
+                    height: parent.height
+                    orientation : Qt.Vertical
+                    onValueChanged: {
+                        containerRow.map.tilt = value;
+                    }
+                    Component.onCompleted: {
+                        minimumValue = Qt.binding(function() { return containerRow.map.minimumTilt; })
+                        maximumValue = Qt.binding(function() { return containerRow.map.maximumTilt; })
+                        value = Qt.binding(function() { return containerRow.map.tilt; })
+                    }
                 }
-            }
-            Rectangle{
-                color: parent.rectangleColor
-                width: labelFovValue.height
-                height: labelFovValue.width
-                anchors.verticalCenter: parent.verticalCenter
-                Label {
-                    id: labelFovValue
-                    text: fovSlider.value.toFixed(2)
-                    font.pixelSize: rowSliderLabels.fontSize
-                    rotation: -90
-                    anchors.centerIn: parent
+                Slider {
+                    id: fovSlider;
+                    height: parent.height
+                    orientation : Qt.Vertical
+                    onValueChanged: {
+                        containerRow.map.fieldOfView = value;
+                    }
+                    Component.onCompleted: {
+                        minimumValue = Qt.binding(function() { return containerRow.map.minimumFieldOfView; })
+                        maximumValue = Qt.binding(function() { return containerRow.map.maximumFieldOfView; })
+                        value = Qt.binding(function() { return containerRow.map.fieldOfView; })
+                    }
                 }
-            }
-//            Rectangle{
-//                color: parent.rectangleColor
-//                width: labelFovValue.height
-//                height: labelFovValue.width
-//                anchors.verticalCenter: parent.verticalCenter
-//                Label {
-//                    id: labelClipValue
-//                    text: clipSlider.value.toFixed(2)
-//                    font.pixelSize: rowSliderLabels.fontSize
-//                    rotation: -90
-//                    anchors.centerIn: parent
-//                }
-//            }
-        }
-    }
+            } // Row sliders
 
-    // The sliders row
-    Row {
-        spacing: 20
-        id: sliderRow
-        anchors.top: rowSlidersValuesContainer.bottom
-        anchors.bottom: rowSliderLabelsContainer.top
-        anchors.right: parent.right
-        anchors.leftMargin: 20
-        anchors.rightMargin: 20
-        anchors.topMargin: 10
-        anchors.bottomMargin: 0
+            // The labels row
+//            Rectangle {
+//                id: rowSliderLabelsContainer
+//                height: 50
+//                width: parent.width
+//                color: "transparent"
 
-        Slider {
-            id: zoomSlider;
-            minimumValue: map.minimumZoomLevel;
-            maximumValue: map.maximumZoomLevel;
-            anchors.margins: 30
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
-            orientation : Qt.Vertical
-            value: map.zoomLevel
-            onValueChanged: {
-                    map.zoomLevel = value
-            }
-        }
+                Row {
+                    id: rowSliderLabels
+                    spacing: sliderRow.spacing
+                    width: sliderRow.width
+                    property real entryWidth: zoomSlider.width
+                    property real entryHeight: 64 // Doesn't matter probably
 
-        Slider {
-            id: bearingSlider;
-            minimumValue: 0;
-            maximumValue: 360;
-            anchors.margins: 30
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
-            orientation : Qt.Vertical
-            value: map.bearing
-            onValueChanged: {
-                map.bearing = value;
-            }
-        }
+                    Rectangle{
+                        color: labelBackground
+                        height: parent.entryHeight
+                        width: parent.entryWidth
+                        border.color: "red"
+                        Label {
+                            id: labelZoom
+                            text: "Zoom"
+                            font.pixelSize: fontSize
+                            rotation: -90
+                            anchors.centerIn: parent
+                        }
+                    }
 
-        Slider {
-            id: tiltSlider;
-            minimumValue: map.minimumTilt;
-            maximumValue: map.maximumTilt;
-            anchors.margins: 30
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
-            orientation : Qt.Vertical
-            value: map.tilt
-            onValueChanged: {
-                map.tilt = value;
-            }
-        }
+                    Rectangle{
+                        color: labelBackground
+                        height: parent.entryHeight
+                        width: parent.entryWidth
+                        border.color: "red"
+                        Label {
+                            id: labelBearing
+                            text: "Bearing"
+                            font.pixelSize: fontSize
+                            rotation: -90
+                            anchors.centerIn: parent
+                        }
+                    }
+                    Rectangle{
+                        color: labelBackground
+                        height: parent.entryHeight
+                        width: parent.entryWidth
+                        border.color: "red"
+                        Label {
+                            id: labelTilt
+                            text: "Tilt"
+                            font.pixelSize: fontSize
+                            rotation: -90
+                            anchors.centerIn: parent
+                        }
+                    }
+                    Rectangle{
+                        color: labelBackground
+                        height: parent.entryHeight
+                        width: parent.entryWidth
+                        border.color: "red"
+                        Label {
+                            id: labelFov
+                            text: "FoV"
+                            font.pixelSize: fontSize
+                            rotation: -90
+                            anchors.centerIn: parent
+                        }
+                    }
 
-        Slider {
-            id: fovSlider;
-            minimumValue: map.minimumFieldOfView;
-            maximumValue: map.maximumFieldOfView;
-            anchors.margins: 30
-            anchors.bottom: parent.bottom
-            anchors.top: parent.top
-            orientation : Qt.Vertical
-            value: map.fieldOfView
-            onValueChanged: {
-                map.fieldOfView = value;
-            }
-        }
-
-//        Slider {
-//            id: clipSlider;
-//            minimumValue: 0.01;
-//            maximumValue: 100;
-//            anchors.margins: 30
-//            anchors.bottom: parent.bottom
-//            anchors.top: parent.top
-//            orientation : Qt.Vertical
-//            value: 6
-//            onValueChanged: {
-//                map.clipDistance = value;
-//            }
-//        }
-    }
-
-    // The labels row
-    Rectangle {
-        id: rowSliderLabelsContainer
-        height: 50
-        color: "transparent"
-        //opacity: 0.3
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.left: parent.left
-        anchors.bottomMargin: 45
-        anchors.rightMargin: 25
-        anchors.leftMargin: 20
-        anchors.topMargin: 0
-        Row {
-            id: rowSliderLabels
-            spacing: 16
-            anchors.fill : parent
-
-            property var fontSize : 14
-            property var rectangleColor : "transparent"
-
-            Rectangle{
-                color: parent.rectangleColor
-                width: labelZoom.height
-                height: labelZoom.width
-                anchors.verticalCenter: parent.verticalCenter
-                Label {
-                    id: labelZoom
-                    text: "Zoom"
-                    font.pixelSize: rowSliderLabels.fontSize
-                    rotation: -90
-    //                transform: Rotation {
-    //                    angle: -90
-    //                } // rotate this text item
-                    anchors.centerIn: parent
                 }
-            }
+//            } // rowSliderLabelsContainer
 
-            Rectangle{
-                color: parent.rectangleColor
-                width: labelBearing.height
-                height: labelBearing.width
-                anchors.verticalCenter: parent.verticalCenter
-                Label {
-                    id: labelBearing
-                    text: "Bearing"
-                    font.pixelSize: rowSliderLabels.fontSize
-                    rotation: -90
-                    anchors.centerIn: parent
-                }
-            }
-            Rectangle{
-                color: parent.rectangleColor
-                width: labelTilt.height
-                height: labelTilt.width
-                anchors.verticalCenter: parent.verticalCenter
-                Label {
-                    id: labelTilt
-                    text: "Tilt"
-                    font.pixelSize: rowSliderLabels.fontSize
-                    rotation: -90
-                    anchors.centerIn: parent
-                }
-            }
-            Rectangle{
-                color: parent.rectangleColor
-                width: labelFov.height
-                height: labelFov.width
-                anchors.verticalCenter: parent.verticalCenter
-                Label {
-                    id: labelFov
-                    text: "FOV"
-                    font.pixelSize: rowSliderLabels.fontSize
-                    rotation: -90
-                    anchors.centerIn: parent
-                }
-            }
-//            Rectangle{
-//                color: parent.rectangleColor
-//                width: labelFov.height
-//                height: labelFov.width
-//                anchors.verticalCenter: parent.verticalCenter
-//                Label {
-//                    id: labelClip
-//                    text: "Clip"
-//                    font.pixelSize: rowSliderLabels.fontSize
-//                    rotation: -90
-//                    anchors.centerIn: parent
-//                }
-//            }
-        }
-    }
-}
-
+        } // Column
+    } // sliderContainer
+} // containerRow
