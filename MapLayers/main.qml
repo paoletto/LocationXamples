@@ -21,7 +21,7 @@ Window {
         opacity: 1.0
         anchors.fill: parent
         plugin: plugins.mapbox
-        activeMapType: mapBase.supportedMapTypes[7]
+        activeMapType: mapBase.supportedMapTypes[4]
         gesture.enabled: false
         center: map.center
         zoomLevel: map.zoomLevel
@@ -39,9 +39,9 @@ Window {
         anchors.fill: parent
         opacity: 1.0
         color: 'transparent'
-        plugin: plugins.osm
+        plugin: testPlugin
         center: QtPositioning.coordinate(45,10)
-        activeMapType: map.supportedMapTypes[7]
+        //activeMapType: map.supportedMapTypes[7]
         zoomLevel: 4
         z : mapBase.z + 1
         copyrightsVisible: win.copyVisible
@@ -57,6 +57,15 @@ Window {
     MapSliders {
         id: sliders
         z: map.z + 1
-        map: map
+        mapSource: map
+    }
+
+    Plugin {
+        id: testPlugin;
+        name: "qmlgeo.test.plugin";
+        allowExperimental: true
+        PluginParameter { name: "finishRequestImmediately"; value: true}
+        PluginParameter { name: "backgroundColor"; value: "transparent"}
+        PluginParameter { name: "textColor"; value: "#A0FF0000"}
     }
 }

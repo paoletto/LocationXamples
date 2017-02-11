@@ -19,7 +19,8 @@ Map {
     MapSliders {
         id: sliders
         z: parent.z + 1
-        map: map
+        mapSource: map
+        edge: Qt.RightEdge
     }
 }
 

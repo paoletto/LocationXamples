@@ -1,34 +1,87 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: http://www.qt.io/licensing/
+**
+** This file is part of the examples of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of The Qt Company Ltd nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
 import QtQuick 2.6
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 
 Row {
     id: containerRow
+
+    property var mapSource
+    property real fontSize : 14
+    property color labelBackground : "transparent"
+    property int edge: Qt.RightEdge
+
+    function rightEdge() {
+        return (containerRow.edge === Qt.RightEdge);
+    }
+
+    layoutDirection: rightEdge() ? Qt.LeftToRight : Qt.RightToLeft
     anchors.top: parent.top
     anchors.bottom: parent.bottom
-    anchors.right: parent.right
-
-    property var map
-    property var fontSize : 14
-    property var labelBackground : "transparent"
+    anchors.right: rightEdge() ? parent.right : undefined
+    anchors.left: rightEdge() ? undefined : parent.left
 
     Button {
         id: sliderToggler
         width: 32
         height: 96
         checkable: true
-        checked: true
+        checked: false
         anchors.verticalCenter: parent.verticalCenter
 
-        style: ButtonStyle {
-                background: Rectangle {
-                    color: "transparent"
-                    //border.color: "red"
+        transform:  Scale {
+                        origin.x: rightEdge() ? 0 : sliderToggler.width / 2
+                        xScale: rightEdge() ? 1 : -1
+                    }
+
+        style:  ButtonStyle {
+                    background: Rectangle {
+                        color: "transparent"
+                    }
                 }
-            }
 
         property real shear: 0.333
         property real buttonOpacity: 0.5
+        property real mirror : rightEdge() ? 1.0 : -1.0
 
         Rectangle {
             width: 16
@@ -68,10 +121,10 @@ Row {
     Rectangle {
         id: sliderContainer
         height: parent.height
-        width: sliderRow.width + 20
+        width: sliderRow.width + 10
         visible: sliderToggler.checked
-        color: Qt.rgba( 0, 191 / 255.0, 255 / 255.0, 0.1)
-        //border.color: "blue"
+        color: Qt.rgba( 0, 191 / 255.0, 255 / 255.0, 0.07)
+
         property var labelBorderColor: "transparent"
         property var slidersHeight : sliderContainer.height
                                      - rowSliderValues.height
@@ -82,9 +135,9 @@ Row {
 
         Column {
             id: sliderColumn
-            spacing: 16
+            spacing: 10
             topPadding: 16
-            bottomPadding: 16
+            bottomPadding: 48
             anchors.centerIn: parent
 
             // the sliders value labels
@@ -92,12 +145,12 @@ Row {
                 id: rowSliderValues
                 spacing: sliderRow.spacing
                 width: sliderRow.width
+                height: 32
                 property real entryWidth: zoomSlider.width
-                property real entryHeight: 32 // Doesn't matter probably
 
                 Rectangle{
                     color: labelBackground
-                    height: parent.entryHeight
+                    height: parent.height
                     width: parent.entryWidth
                     border.color: sliderContainer.labelBorderColor
                     Label {
@@ -110,7 +163,7 @@ Row {
                 }
                 Rectangle{
                     color: labelBackground
-                    height: parent.entryHeight
+                    height: parent.height
                     width: parent.entryWidth
                     border.color: sliderContainer.labelBorderColor
                     Label {
@@ -123,7 +176,7 @@ Row {
                 }
                 Rectangle{
                     color: labelBackground
-                    height: parent.entryHeight
+                    height: parent.height
                     width: parent.entryWidth
                     border.color: sliderContainer.labelBorderColor
                     Label {
@@ -136,7 +189,7 @@ Row {
                 }
                 Rectangle{
                     color: labelBackground
-                    height: parent.entryHeight
+                    height: parent.height
                     width: parent.entryWidth
                     border.color: sliderContainer.labelBorderColor
                     Label {
@@ -151,58 +204,58 @@ Row {
 
             // The sliders row
             Row {
-                spacing: 20
+                spacing: 10
                 id: sliderRow
                 height: sliderContainer.slidersHeight
 
                 Slider {
-                    id: zoomSlider;
+                    id: zoomSlider
                     height: parent.height
                     orientation : Qt.Vertical
                     onValueChanged: {
-                            containerRow.map.zoomLevel = value
+                            containerRow.mapSource.zoomLevel = value
                     }
                     Component.onCompleted: {
-                        minimumValue = Qt.binding(function() { return containerRow.map.minimumZoomLevel; })
-                        maximumValue = Qt.binding(function() { return containerRow.map.maximumZoomLevel; })
-                        value = Qt.binding(function() { return containerRow.map.zoomLevel; })
+                        minimumValue = Qt.binding(function() { return containerRow.mapSource.minimumZoomLevel; })
+                        maximumValue = Qt.binding(function() { return containerRow.mapSource.maximumZoomLevel; })
+                        value = Qt.binding(function() { return containerRow.mapSource.zoomLevel; })
                     }
                 }
                 Slider {
-                    id: bearingSlider;
+                    id: bearingSlider
                     height: parent.height
-                    minimumValue: 0;
-                    maximumValue: 360;
+                    minimumValue: 0
+                    maximumValue: 360
                     orientation : Qt.Vertical
-                    value: containerRow.map.bearing
+                    value: containerRow.mapSource.bearing
                     onValueChanged: {
-                        containerRow.map.bearing = value;
+                        containerRow.mapSource.bearing = value;
                     }
                 }
                 Slider {
-                    id: tiltSlider;
+                    id: tiltSlider
                     height: parent.height
                     orientation : Qt.Vertical
                     onValueChanged: {
-                        containerRow.map.tilt = value;
+                        containerRow.mapSource.tilt = value;
                     }
                     Component.onCompleted: {
-                        minimumValue = Qt.binding(function() { return containerRow.map.minimumTilt; })
-                        maximumValue = Qt.binding(function() { return containerRow.map.maximumTilt; })
-                        value = Qt.binding(function() { return containerRow.map.tilt; })
+                        minimumValue = Qt.binding(function() { return containerRow.mapSource.minimumTilt; })
+                        maximumValue = Qt.binding(function() { return containerRow.mapSource.maximumTilt; })
+                        value = Qt.binding(function() { return containerRow.mapSource.tilt; })
                     }
                 }
                 Slider {
-                    id: fovSlider;
+                    id: fovSlider
                     height: parent.height
                     orientation : Qt.Vertical
                     onValueChanged: {
-                        containerRow.map.fieldOfView = value;
+                        containerRow.mapSource.fieldOfView = value;
                     }
                     Component.onCompleted: {
-                        minimumValue = Qt.binding(function() { return containerRow.map.minimumFieldOfView; })
-                        maximumValue = Qt.binding(function() { return containerRow.map.maximumFieldOfView; })
-                        value = Qt.binding(function() { return containerRow.map.fieldOfView; })
+                        minimumValue = Qt.binding(function() { return containerRow.mapSource.minimumFieldOfView; })
+                        maximumValue = Qt.binding(function() { return containerRow.mapSource.maximumFieldOfView; })
+                        value = Qt.binding(function() { return containerRow.mapSource.fieldOfView; })
                     }
                 }
             } // Row sliders
@@ -213,7 +266,7 @@ Row {
                 spacing: sliderRow.spacing
                 width: sliderRow.width
                 property real entryWidth: zoomSlider.width
-                property real entryHeight: 64 // Doesn't matter probably
+                property real entryHeight: 64
 
                 Rectangle{
                     color: labelBackground

@@ -131,6 +131,16 @@ Item {
         name: "esri"
     }
 
+// Somehow not working in here
+//    Plugin {
+//        id: testPlugin;
+//        name: "qmlgeo.test.plugin";
+//        allowExperimental: true
+//        PluginParameter { name: "finishRequestImmediately"; value: true}
+//        PluginParameter { name: "backgroundColor"; value: "transparent"}
+//        PluginParameter { name: "textColor"; value: "#A0FF0000"}
+//    }
+
 //    Plugin {
 //        id: tilting
 //        name: "tilting"
