@@ -62,10 +62,9 @@ Window {
 
     Plugin {
         id: testPlugin;
-        name: "qmlgeo.test.plugin";
+        name: "tileoverlay";
         allowExperimental: true
-        PluginParameter { name: "finishRequestImmediately"; value: true}
-        PluginParameter { name: "backgroundColor"; value: "transparent"}
-        PluginParameter { name: "textColor"; value: "#A0FF0000"}
+        PluginParameter { name: "tileoverlay.backgroundColor"; value: "transparent"}
+        PluginParameter { name: "tileoverlay.textColor"; value: "#A0FF0000"}
     }
 }
