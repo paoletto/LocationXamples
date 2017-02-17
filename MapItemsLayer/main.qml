@@ -91,7 +91,7 @@ Window {
             id: itemGroup
         }
 
-        // The above to enable SSAA
+        // The code below to enable SSAA
         layer.enabled: true
         layer.smooth: true
         property int w : mapOverlay.width
@@ -115,14 +115,6 @@ Window {
     }
 
     Plugin {
-        id: testPlugin;
-        name: "tileoverlay";
-        allowExperimental: true
-        PluginParameter { name: "tileoverlay.backgroundColor"; value: "transparent"}
-        PluginParameter { name: "tileoverlay.textColor"; value: "#A0FF0000"}
-    }
-
-    Plugin {
         id: osmPlugin
         name: "osm"
         PluginParameter{ name: "osm.mapping.custom.host"; value: "http://c.tiles.wmflabs.org/hillshading/"}
@@ -131,6 +123,6 @@ Window {
 
     Plugin {
         id: nomap
-        name: "nomap"
+        name: "itemsoverlay"
     }
 }
