@@ -1,0 +1,10 @@
+{
+    "Keys": ["tileoverlay"],
+    "Provider": "tileoverlay",
+    "Version": 100,
+    "Experimental": false,
+    "Features": [
+        "OfflineMappingFeature"
+    ]
+}
+
