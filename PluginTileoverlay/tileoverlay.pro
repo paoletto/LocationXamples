@@ -30,4 +30,6 @@ DISTFILES += \
     tileoverlay_plugin.json
 
 # Place the lib into a "geoservices" subdir, otherwise addLibraryPath wont work.
-DESTDIR = $$OUT_PWD/geoservices/
+#DESTDIR = $$OUT_PWD/geoservices/
+# Hardcoding the dest dir to be a subdir of the source dir
+DESTDIR = $$PWD/bin/geoservices/

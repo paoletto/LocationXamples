@@ -48,8 +48,8 @@ import LocationComponents 1.0
 Window {
     id: win
     visible: true
-    width: 640
-    height: 640
+    width: 1280
+    height: 720
     property var copyVisible : false
 
     GeoservicePlugins {
@@ -60,8 +60,8 @@ Window {
         id: mapBase
         opacity: 1.0
         anchors.fill: parent
-        plugin: plugins.osm
-        activeMapType: mapBase.supportedMapTypes[1]
+        plugin: plugins.mapbox
+        activeMapType: mapBase.supportedMapTypes[4]
         gesture.enabled: false
         center: map.center
         zoomLevel: map.zoomLevel
@@ -72,32 +72,31 @@ Window {
         copyrightsVisible: win.copyVisible
     }
 
-    Map {
+    MapWithSliders {
         id: map
         gesture.enabled: true
         objectName: "mapComponent"
         anchors.fill: parent
         opacity: 1.0
         color: 'transparent'
-        plugin: plugins.osm
+        plugin: testPlugin
         center: QtPositioning.coordinate(45,10)
-        activeMapType: map.supportedMapTypes[7]
+        minimumZoomLevel: mapBase.minimumZoomLevel
+        maximumZoomLevel: mapBase.maximumZoomLevel
+//        minimumTilt: mapBase.minimumTilt
+//        maximumTilt: mapBase.maximumTilt
+//        minimumFieldOfView: mapBase.minimumFieldOfView
+//        maximumFieldOfView: mapBase.maximumFieldOfView
         zoomLevel: 4
         z : mapBase.z + 1
         copyrightsVisible: win.copyVisible
     }
 
-    MapCrosshair {
-        width: 20
-        height: 20
-        anchors.centerIn: parent
-        z: map.z + 1
+    Plugin {
+        id: testPlugin;
+        name: "tileoverlay";
+        allowExperimental: true
+        PluginParameter { name: "tileoverlay.backgroundColor"; value: "transparent"}
+        PluginParameter { name: "tileoverlay.textColor"; value: "#A0FF0000"}
     }
-
-    MapSliders {
-        id: sliders
-        z: map.z + 1
-        mapSource: map
-    }
-
 }

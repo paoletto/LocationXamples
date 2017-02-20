@@ -53,6 +53,7 @@
         const QByteArray additionalLibraryPaths = qgetenv("QTLOCATION_EXTRA_LIBRARY_PATH"); \
         for (const QByteArray &p : additionalLibraryPaths.split(':')) \
             QCoreApplication::addLibraryPath(QString(p)); \
+        QCoreApplication::addLibraryPath(QString(xstr(LOCATION_COMPONENTS_PWD)) + "/PluginTileoverlay/bin"); \
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling); \
         engine.addImportPath(xstr(LOCATION_COMPONENTS_PWD)); \
         qmlRegisterSingletonType<QmlSystemEnvironment>("LocationComponents", 1, 0, \

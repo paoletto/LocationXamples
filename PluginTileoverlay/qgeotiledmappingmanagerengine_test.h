@@ -60,7 +60,9 @@ public:
         capabilities.setSupportsBearing(true);
         capabilities.setSupportsTilting(true);
         capabilities.setMinimumTilt(0);
-        capabilities.setMaximumTilt(60);
+        capabilities.setMaximumTilt(89.5);
+        capabilities.setMinimumFieldOfView(1);
+        capabilities.setMaximumFieldOfView(179);
         setTileSize(QSize(256, 256));
 
         QList<QGeoMapType> mapTypes;
