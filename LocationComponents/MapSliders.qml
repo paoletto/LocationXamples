@@ -65,7 +65,7 @@ Row {
         width: 32
         height: 96
         checkable: true
-        checked: false
+        checked: true
         anchors.verticalCenter: parent.verticalCenter
 
         transform:  Scale {

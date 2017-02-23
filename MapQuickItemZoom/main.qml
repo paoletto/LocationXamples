@@ -61,14 +61,40 @@ Window {
         anchors.fill: parent
         opacity: 1.0
         color: 'transparent'
+        //plugin: tilting
         plugin: plugins.osm
-        center: QtPositioning.coordinate(45,10)
-        activeMapType: map.supportedMapTypes[0]
-        zoomLevel: 4
+        //plugin: itemsoverlay
+        center: QtPositioning.coordinate(18.859820495687384, 50.164062499994515)//QtPositioning.coordinate(45,10)
+        //activeMapType: map.supportedMapTypes[0]
+        zoomLevel: 2.0
         copyrightsVisible: win.copyVisible
+        fieldOfView: 90
 
         MapQuickItemQt {
-            zoomLevel: 2.5
+            zoomLevel: 1.32
+            anchorPoint.x: sourceItem.width / 2
+            anchorPoint.y: sourceItem.height / 2
+            //z: 456
         }
+
+        MapQuickItemQt {
+            //zoomLevel: 1.32
+            coordinate: QtPositioning.coordinate(35, 0)
+            anchorPoint.x: sourceItem.width / 2
+            anchorPoint.y: sourceItem.height / 2
+            //z: 456
+        }
+        onCenterChanged : {
+            console.log(map.center.latitude+" "+map.center.longitude);
+        }
+    }
+
+    Plugin {
+        id: tilting
+        name: "tilting"
+    }
+    Plugin {
+        id: itemsoverlay
+        name: "itemsoverlay"
     }
 }

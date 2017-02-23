@@ -51,10 +51,17 @@ MapQuickItem{
         width:40
         height:40
         color:'red'
-        border.width: 2;
-        border.color: "white";
+//        border.width: 2;
+//        border.color: "white";
         smooth: true;
-        radius: 5
+
+//        radius: 5
+//        transform: Matrix4x4 {
+//            matrix:    Qt.matrix4x4(1.0,    0.3,    0.0,    0.0,
+//                                    0.0,    1.0,    0.0,    0.0,
+//                                    0.0,    0.0,    1.0,    0.0,
+//                                    0.0,    0.0,    0.0,    1.0)
+//        }
 
         MapCrosshair {
             anchors.fill: parent
