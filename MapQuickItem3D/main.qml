@@ -44,10 +44,12 @@ import QtQuick.Controls 1.4
 import QtPositioning 5.6
 import QtLocation 5.9
 import LocationComponents 1.0
-import Qt3D.Core 2.0
-import Qt3D.Render 2.0
 import QtQuick 2.0 as QQ2
 import QtQuick.Scene3D 2.0
+import Qt3D.Core 2.0
+import Qt3D.Render 2.0
+import Qt3D.Input 2.0
+import Qt3D.Extras 2.0
 
 QQW.Window {
     id: win
@@ -59,6 +61,11 @@ QQW.Window {
     GeoservicePlugins {
         id: plugins
     }
+
+//    Plugin {
+//        id: itemsoverlay
+//        name: "itemsoverlay"
+//    }
 
     MapWithSliders {
         id: map
@@ -77,7 +84,8 @@ QQW.Window {
             coordinate: QtPositioning.coordinate(19,50)
             opacity: 1
 
-            sourceItem: Scene3D {
+            sourceItem:
+                Scene3D {
                     id: scene3d
                     width:40
                     height:40
@@ -177,12 +185,6 @@ QQW.Window {
                         }
                     }
                 }
-            }
         }
-    }
-
-    Plugin {
-        id: itemsoverlay
-        name: "itemsoverlay"
     }
 }
