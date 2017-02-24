@@ -90,10 +90,6 @@ Window {
     }
 
     Plugin {
-        id: tilting
-        name: "tilting"
-    }
-    Plugin {
         id: itemsoverlay
         name: "itemsoverlay"
     }
