@@ -44,8 +44,6 @@ import QtQuick.Controls 1.4
 import QtPositioning 5.6
 import QtLocation 5.9
 import LocationComponents 1.0
-//import Qt3D.Core 2.0
-//import Qt3D.Render 2.0
 
 QQW.Window {
     id: win
@@ -70,16 +68,27 @@ QQW.Window {
         copyrightsVisible: win.copyVisible
         fieldOfView: 90
 
+
         MapQuickItem{
             id: mqi
             coordinate: QtPositioning.coordinate(19,50)
             opacity: 1
+            zoomLevel: 2
 
-            sourceItem: Rectangle{
+//            sourceItem: Rectangle{
+//                width:40
+//                height:40
+//                color:'red'
+//                smooth: true;
+
+//                MouseArea{
+//                    anchors.fill: parent
+//                    drag.target: mqi
+//                }
+//            }
+            sourceItem: Cube {
                 width:40
                 height:40
-                color:'red'
-                smooth: true;
 
                 MouseArea{
                     anchors.fill: parent

@@ -41,13 +41,70 @@
 #include "locationcomponents.h"
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <qqml.h>
+#include "qmlcube.h"
+#include <QtGui/qopenglcontext.h>
+
+bool OGLSupports(int major, int minor, bool gles = false, bool compatibility = true)
+{
+    QOpenGLContext ctx;
+    QSurfaceFormat fmt;
+    fmt.setVersion(major, minor);
+    if (gles) {
+        fmt.setRenderableType(QSurfaceFormat::OpenGLES);
+    } else {
+        fmt.setRenderableType(QSurfaceFormat::OpenGL);
+        if (compatibility)
+            fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
+        else
+            fmt.setProfile(QSurfaceFormat::CoreProfile);
+    }
+
+    ctx.setFormat(fmt);
+    ctx.create();
+    if (!ctx.isValid())
+        return false;
+    int ctxMajor = ctx.format().majorVersion();
+    int ctxMinor = ctx.format().minorVersion();
+    bool isGles = (ctx.format().renderableType() == QSurfaceFormat::OpenGLES);
+    bool isCompatibility = (ctx.format().profile() == QSurfaceFormat::CompatibilityProfile);
+
+    if (isGles != gles) return false;
+    if (ctxMajor < major) return false;
+    if (ctxMajor == major && ctxMinor < minor)
+        return false;
+    if (!gles && compatibility != isCompatibility)
+        return false;
+    return true;
+}
+
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+    QSurfaceFormat fmt;
+    fmt.setDepthBufferSize(24);
+
+    if (OGLSupports(3, 3,false,false)) {
+        qDebug("Requesting 3.3 core context");
+        fmt.setVersion(3, 3);
+        fmt.setRenderableType(QSurfaceFormat::OpenGL);
+        fmt.setProfile(QSurfaceFormat::CoreProfile);
+    } else if (OGLSupports(3,0,true)) {
+        qDebug("Requesting 3.0 GLES context");
+        fmt.setVersion(3, 0);
+        fmt.setRenderableType(QSurfaceFormat::OpenGLES);
+    } else {
+        qWarning("Error: OpenGL support is too old. Exiting.");
+        return -1;
+    }
+    QSurfaceFormat::setDefaultFormat(fmt);
+
     QQmlApplicationEngine engine;
     registerLocationComponents(engine);
+    qmlRegisterType<QmlCube>("LocationComponents", 1, 0, \
+            "Cube");
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     return app.exec();
