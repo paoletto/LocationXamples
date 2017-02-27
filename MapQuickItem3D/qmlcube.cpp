@@ -60,6 +60,7 @@ public:
 private:
     QmlCube *m_cube;
     QOpenGLShaderProgram *m_shader;
+    QOpenGLShaderProgram *m_shaderBlending;
 };
 
 QmlCubeRenderNode::QmlCubeRenderNode(QmlCube *cube): m_cube(cube), m_shader(0)
@@ -139,7 +140,14 @@ void QmlCubeRenderNode::render(const QSGRenderNode::RenderState *state)
             "in highp vec3 texCoord;\n"
             "layout(location = 0) out lowp vec4 color;\n"
             "void main() {\n"
-            "   color = vec4(texCoord.rgb, 1.0);\n"
+            "   color = vec4(texCoord.rgb - vec3(2,2,2), 0.0);\n"
+            "}\n";
+
+        static const char *fragmentShaderSourceBlending =
+            "in highp vec3 texCoord;\n"
+            "layout(location = 0) out lowp vec4 color;\n"
+            "void main() {\n"
+            "   color = vec4(texCoord.rgb, 0.5);\n"
             "   //gl_FragDepth = 0.0;\n"
             "}\n";
 
@@ -147,20 +155,46 @@ void QmlCubeRenderNode::render(const QSGRenderNode::RenderState *state)
         m_shader->addShaderFromSourceCode(QOpenGLShader::Vertex, versionedShaderCode(vertexShaderSource));
         m_shader->addShaderFromSourceCode(QOpenGLShader::Fragment, versionedShaderCode(fragmentShaderSource));
         m_shader->link();
+
+        m_shaderBlending = new QOpenGLShaderProgram;
+        m_shaderBlending->addShaderFromSourceCode(QOpenGLShader::Vertex, versionedShaderCode(vertexShaderSource));
+        m_shaderBlending->addShaderFromSourceCode(QOpenGLShader::Fragment, versionedShaderCode(fragmentShaderSourceBlending));
+        m_shaderBlending->link();
     }
 
    QOpenGLExtraFunctions *f = QOpenGLContext::currentContext()->extraFunctions();
 
-   m_shader->bind();
-   m_shader->setUniformValue("projection", transformation);
+
+//   f->glClearDepthf(1.0f);
+//   f->glClear(GL_DEPTH_BUFFER_BIT);
+
+   // To do proper surface-only semitransparency, 2 pass rendering
+   // Pass 1: write only the depth buffer, not the color buffer
+   // Pass 2: depth function LE, write color too
+
 
    f->glEnable(GL_DEPTH_TEST);
    f->glDepthFunc(GL_LESS);
-//   f->glClearDepthf(1.0f);
-//   f->glClear(GL_DEPTH_BUFFER_BIT);
-   f->glDrawArrays(GL_TRIANGLES, 0, 36);
+   f->glDepthMask(true);
+   f->glColorMask(false,false,false,false);
 
+   m_shader->bind();
+   m_shader->setUniformValue("projection", transformation);
+   f->glDrawArrays(GL_TRIANGLES, 0, 36);
    m_shader->release();
+
+   f->glDepthFunc(GL_LEQUAL);
+   f->glDepthMask(false);
+   f->glColorMask(true,true,true,true);
+   f->glEnable(GL_BLEND);
+   f->glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+   m_shaderBlending->bind();
+   m_shaderBlending->setUniformValue("projection", transformation);
+   f->glDrawArrays(GL_TRIANGLES, 0, 36);
+   m_shaderBlending->release();
+
+
 }
 
 void QmlCubeRenderNode::releaseResources()
@@ -168,6 +202,10 @@ void QmlCubeRenderNode::releaseResources()
     if (m_shader)
         delete m_shader;
     m_shader = 0;
+
+    if (m_shaderBlending)
+        delete m_shaderBlending;
+    m_shaderBlending = 0;
 }
 
 QSGRenderNode::StateFlags QmlCubeRenderNode::changedStates() const
