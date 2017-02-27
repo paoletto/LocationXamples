@@ -49,6 +49,8 @@ class QmlCube : public QQuickItem
 public:
     QmlCube();
 
+    bool contains(const QPointF &point) const Q_DECL_OVERRIDE;
+
 protected:
     QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *data) Q_DECL_OVERRIDE;
 

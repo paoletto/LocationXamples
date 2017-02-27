@@ -65,12 +65,12 @@ private:
 
 QmlCubeRenderNode::QmlCubeRenderNode(QmlCube *cube): m_cube(cube), m_shader(0)
 {
-    qDebug() << "QmlCubeRenderNode created";
+
 }
 
 QmlCubeRenderNode::~QmlCubeRenderNode()
 {
-    qDebug() << "QmlCubeRenderNode destroyed";
+
 }
 
 static QByteArray versionedShaderCode(const char *src)
@@ -91,9 +91,6 @@ void QmlCubeRenderNode::render(const QSGRenderNode::RenderState *state)
     QMatrix4x4 matScale;
     matScale.scale(m_cube->width(), m_cube->height(), m_cube->width());
     QMatrix4x4 transformation = *state->projectionMatrix() * *matrix() * matScale;
-
-//    qDebug() << *state->projectionMatrix();
-//    qDebug() << *matrix();
 
     // Do the GL rendering
 
@@ -173,27 +170,28 @@ void QmlCubeRenderNode::render(const QSGRenderNode::RenderState *state)
    // Pass 2: depth function LE, write color too
 
 
-   f->glEnable(GL_DEPTH_TEST);
-   f->glDepthFunc(GL_LESS);
-   f->glDepthMask(true);
-   f->glColorMask(false,false,false,false);
+    f->glEnable(GL_DEPTH_TEST);
+    f->glDepthFunc(GL_LESS);
+    f->glDepthMask(true);
+    f->glColorMask(false,false,false,false);
 
-   m_shader->bind();
-   m_shader->setUniformValue("projection", transformation);
-   f->glDrawArrays(GL_TRIANGLES, 0, 36);
-   m_shader->release();
+    m_shader->bind();
+    m_shader->setUniformValue("projection", transformation);
+    f->glDrawArrays(GL_TRIANGLES, 0, 36);
+    m_shader->release();
 
-   f->glDepthFunc(GL_LEQUAL);
-   f->glDepthMask(false);
-   f->glColorMask(true,true,true,true);
-   f->glEnable(GL_BLEND);
-   f->glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    f->glDepthFunc(GL_LEQUAL);
+    f->glDepthMask(false);
+    f->glColorMask(true,true,true,true);
+    f->glEnable(GL_BLEND);
+    f->glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-   m_shaderBlending->bind();
-   m_shaderBlending->setUniformValue("projection", transformation);
-   f->glDrawArrays(GL_TRIANGLES, 0, 36);
-   m_shaderBlending->release();
-
+    m_shaderBlending->bind();
+    m_shaderBlending->setUniformValue("projection", transformation);
+    f->glDrawArrays(GL_TRIANGLES, 0, 36);
+    m_shaderBlending->release();
+    f->glDisable(GL_DEPTH_TEST);
+    f->glDisable(GL_BLEND);
 
 }
 
@@ -239,7 +237,12 @@ QRectF QmlCubeRenderNode::rect() const
 QmlCube::QmlCube()
 {
     setFlag(ItemHasContents);
-    qDebug() << "QmlCube created";
+}
+
+bool QmlCube::contains(const QPointF &point) const
+{
+    qDebug() << "QmlCube contains called";
+    return QQuickItem::contains(point);
 }
 
 QSGNode *QmlCube::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *data)
