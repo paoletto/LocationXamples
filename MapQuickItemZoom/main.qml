@@ -84,6 +84,44 @@ Window {
             anchorPoint.y: sourceItem.height / 2
             //z: 456
         }
+
+        MapQuickItem {
+            id: markerTest
+            z: 10
+
+            coordinate { latitude: 42.350000000; longitude: -71.0}
+
+            sourceItem: Rectangle {
+                id: isSelectedMarker
+
+                width: testRectangle.height * 1.3
+                radius: width/2
+                height: width
+                color: "transparent"
+                border.color: "black"
+
+                Rectangle {
+                    id: testRectangle
+                    anchors.centerIn: parent
+                    width: 20
+                    height: 40
+                    color: "red"
+                    opacity: markerMouseArea.pressed ? 0.6 : 1.0
+
+//                    MouseArea  {
+//                        id: markerMouseArea
+//                        anchors.fill: isSelectedMarker
+//                        drag.target: markerTest
+//                    }
+                }
+
+                MouseArea  {
+                    id: markerMouseArea
+                    anchors.fill: isSelectedMarker
+                    drag.target: markerTest
+                }
+            }
+        }
         onCenterChanged : {
             console.log(map.center.latitude+" "+map.center.longitude);
         }
