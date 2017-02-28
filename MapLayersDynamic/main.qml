@@ -59,7 +59,8 @@ Window {
     Map {
         id: mapBase
         opacity: 1.0
-        anchors.fill: parent
+        anchors.fill: parent;
+
         plugin: plugins.osm
         activeMapType: mapBase.supportedMapTypes[1]
         z: parent.z + 1
@@ -104,8 +105,9 @@ Window {
             import LocationComponents 1.0;
             Map {
                 id: map;
+
                 gesture.enabled: false;
-                anchors.fill: parent;
+                anchors.fill: parent
                 opacity: 1.0;
                 color: 'transparent';
                 plugin: plugins.osm;
