@@ -62,42 +62,62 @@ Window {
         anchors.fill: parent
         plugin: plugins.osm
         activeMapType: mapBase.supportedMapTypes[1]
-        gesture.enabled: false
-        center: map.center
-        zoomLevel: map.zoomLevel
-        tilt: map.tilt;
-        bearing: map.bearing
-        fieldOfView: map.fieldOfView
         z: parent.z + 1
         copyrightsVisible: win.copyVisible
-    }
 
-    Map {
-        id: map
-        gesture.enabled: true
-        objectName: "mapComponent"
-        anchors.fill: parent
-        opacity: 1.0
-        color: 'transparent'
-        plugin: plugins.osm
-        center: QtPositioning.coordinate(45,10)
-        activeMapType: map.supportedMapTypes[map.supportedMapTypes.length - 1]
-        zoomLevel: 4
-        z : mapBase.z + 1
-        copyrightsVisible: win.copyVisible
+        Component.onCompleted: {
+            timer.start()
+        }
     }
 
     MapCrosshair {
         width: 20
         height: 20
         anchors.centerIn: parent
-        z: map.z + 1
+        z: mapBase.z + 10
     }
 
     MapSliders {
         id: sliders
-        z: map.z + 1
-        mapSource: map
+        z: mapBase.z + 10
+        mapSource: mapBase
     }
 
+    Timer {
+        id: timer
+        interval: 5000
+        running: false
+        repeat: true
+        property var idx: 0
+        onTriggered: {
+            if (timer.idx == 1)
+                return;
+            timer.idx = 1;
+            console.log("Timer triggered");
+            //return;
+
+            var overlay = Qt.createQmlObject ("import QtQuick 2.7;
+            import QtQuick.Window 2.2;
+            import QtQuick.Controls 1.4;
+            import QtPositioning 5.6;
+            import QtLocation 5.9;
+            import LocationComponents 1.0;
+            Map {
+                id: map;
+                gesture.enabled: false;
+                anchors.fill: parent;
+                opacity: 1.0;
+                color: 'transparent';
+                plugin: plugins.osm;
+                activeMapType: map.supportedMapTypes[map.supportedMapTypes.length - 1];
+                z : mapBase.z + 1;
+                copyrightsVisible: win.copyVisible;
+                center: mapBase.center;
+                zoomLevel: mapBase.zoomLevel;
+                tilt: mapBase.tilt;
+                bearing: mapBase.bearing;
+                fieldOfView: mapBase.fieldOfView;
+            }", win);
+        }
+    }
 }
