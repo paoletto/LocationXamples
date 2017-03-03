@@ -103,9 +103,9 @@ Window {
                 id: videoContainer
                 color: "transparent"
                 //border.color: "red"
-                width: 100
+                width: 256
                 height: width
-                opacity: 0.8
+                opacity: 1.0
 
                 transform: Matrix4x4 {
                     id: matTransform
@@ -173,16 +173,30 @@ Window {
                     }
                 }
 
+                ShaderEffectSource {
+                    anchors.fill: parent
+                    id: shaEffectSource
+                    width: 960
+                    height: 540
+                    sourceItem: video
+                }
+
                 Video {
                     id: video
                     anchors.fill: parent
                     autoLoad: true
                     autoPlay: true
+                    visible: true
+                    z: shaEffectSource.z + 1
                     fillMode: VideoOutput.Stretch
                     source: "https://www.mapbox.com/drone/video/drone.mp4"
                     onPlaybackStateChanged: {
+                        console.log("PlaybackState: " +video.playbackState)
                         if (video.playbackState == MediaPlayer.StoppedState) {
+                            shaEffectSource.live = false;
                             video.play()
+                        } else {
+                            z = shaEffectSource.z + 1
                         }
                     }
                 }
