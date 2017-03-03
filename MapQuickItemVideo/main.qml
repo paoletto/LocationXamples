@@ -173,6 +173,7 @@ Window {
                     }
                 }
 
+                // Hack to make the playback seem gapless. Not a great hack, though
                 ShaderEffectSource {
                     anchors.fill: parent
                     id: shaEffectSource
@@ -191,7 +192,6 @@ Window {
                     fillMode: VideoOutput.Stretch
                     source: "https://www.mapbox.com/drone/video/drone.mp4"
                     onPlaybackStateChanged: {
-                        console.log("PlaybackState: " +video.playbackState)
                         if (video.playbackState == MediaPlayer.StoppedState) {
                             shaEffectSource.live = false;
                             video.play()
