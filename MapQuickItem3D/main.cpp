@@ -81,12 +81,18 @@ bool OGLSupports(int major, int minor, bool gles = false, bool compatibility = t
 
 int main(int argc, char *argv[])
 {
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
 
     QSurfaceFormat fmt;
     fmt.setDepthBufferSize(24);
 
-    if (OGLSupports(3, 3,false,false)) {
+    if (OGLSupports(3, 3,false,true)) {
+        qDebug("Requesting 3.3 core context");
+        fmt.setVersion(3, 3);
+        fmt.setRenderableType(QSurfaceFormat::OpenGL);
+        fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
+    } else if (OGLSupports(3, 3,false,true)) {
         qDebug("Requesting 3.3 core context");
         fmt.setVersion(3, 3);
         fmt.setRenderableType(QSurfaceFormat::OpenGL);

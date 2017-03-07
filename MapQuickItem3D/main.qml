@@ -61,7 +61,7 @@ QQW.Window {
         anchors.fill: parent
         opacity: 1.0
         color: 'transparent'
-        plugin: plugins.osm
+        plugin: plugins.mapboxgl
         center: QtPositioning.coordinate(18.859820495687384, 50.164062499994515)//QtPositioning.coordinate(45,10)
         //activeMapType: map.supportedMapTypes[0]
         zoomLevel: 2.0

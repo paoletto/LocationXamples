@@ -33,7 +33,7 @@ Window {
         anchors.fill: parent
         opacity: 1.0
         color: 'transparent'
-        plugin: plugins.mapbox
+        plugin: plugins.mapboxgl
         zoomLevel: 17
         activeMapType: map.supportedMapTypes[3]
         fieldOfView: 90
@@ -52,9 +52,10 @@ Window {
             z: markerTest.z + 1
         }
 
-        onInitialized: {
+        onSupportedMapTypesChanged: {
             console.log("Plugin changed")
             markerTest.updateSize()
+            //map.center = QtPositioning.coordinate(37.562984, -122.514426)
         }
 
         MapQuickItem {
