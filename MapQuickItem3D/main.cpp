@@ -82,26 +82,7 @@ int main(int argc, char *argv[])
     QSurfaceFormat fmt;
     fmt.setDepthBufferSize(24);
 
-    if (OGLSupports(3, 3,false, QSurfaceFormat::CompatibilityProfile)) {
-        qDebug("Requesting 3.3 compatibility context");
-        fmt.setVersion(3, 3);
-        fmt.setRenderableType(QSurfaceFormat::OpenGL);
-        fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
-    }
-    else if (OGLSupports(2, 1,false)) {
-        qDebug("Requesting 2.1 context");
-        fmt.setVersion(2, 1);
-        fmt.setRenderableType(QSurfaceFormat::OpenGL);
-        fmt.setProfile(QSurfaceFormat::NoProfile);
-    }
-    // Core context doesn't play well with MapboxGL, since it requires #version directives in GLSL
-//    else if (OGLSupports(3, 3,false,false)) {
-//        qDebug("Requesting 3.3 core context");
-//        fmt.setVersion(3, 3);
-//        fmt.setRenderableType(QSurfaceFormat::OpenGL);
-//        fmt.setProfile(QSurfaceFormat::CoreProfile);
-//    }
-    else if (OGLSupports(3,0,true)) {
+    if (OGLSupports(3,0,true)) {
         qDebug("Requesting 3.0 GLES context");
         fmt.setVersion(3, 0);
         fmt.setRenderableType(QSurfaceFormat::OpenGLES);
