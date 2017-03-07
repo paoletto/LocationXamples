@@ -45,7 +45,7 @@
 #include "qmlcube.h"
 #include <QtGui/qopenglcontext.h>
 
-bool OGLSupports(int major, int minor, bool gles = false, bool compatibility = true)
+bool OGLSupports(int major, int minor, bool gles = false, QSurfaceFormat::OpenGLContextProfile profile = QSurfaceFormat::NoProfile)
 {
     QOpenGLContext ctx;
     QSurfaceFormat fmt;
@@ -54,10 +54,7 @@ bool OGLSupports(int major, int minor, bool gles = false, bool compatibility = t
         fmt.setRenderableType(QSurfaceFormat::OpenGLES);
     } else {
         fmt.setRenderableType(QSurfaceFormat::OpenGL);
-        if (compatibility)
-            fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
-        else
-            fmt.setProfile(QSurfaceFormat::CoreProfile);
+        fmt.setProfile(profile);
     }
 
     ctx.setFormat(fmt);
@@ -67,17 +64,15 @@ bool OGLSupports(int major, int minor, bool gles = false, bool compatibility = t
     int ctxMajor = ctx.format().majorVersion();
     int ctxMinor = ctx.format().minorVersion();
     bool isGles = (ctx.format().renderableType() == QSurfaceFormat::OpenGLES);
-    bool isCompatibility = (ctx.format().profile() == QSurfaceFormat::CompatibilityProfile);
 
     if (isGles != gles) return false;
     if (ctxMajor < major) return false;
     if (ctxMajor == major && ctxMinor < minor)
         return false;
-    if (!gles && compatibility != isCompatibility)
+    if (!gles && ctx.format().profile() != profile)
         return false;
     return true;
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -87,21 +82,31 @@ int main(int argc, char *argv[])
     QSurfaceFormat fmt;
     fmt.setDepthBufferSize(24);
 
-    if (OGLSupports(3, 3,false,true)) {
-        qDebug("Requesting 3.3 core context");
+    if (OGLSupports(3, 3,false, QSurfaceFormat::CompatibilityProfile)) {
+        qDebug("Requesting 3.3 compatibility context");
         fmt.setVersion(3, 3);
         fmt.setRenderableType(QSurfaceFormat::OpenGL);
         fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
-    } else if (OGLSupports(3, 3,false,true)) {
-        qDebug("Requesting 3.3 core context");
-        fmt.setVersion(3, 3);
+    }
+    else if (OGLSupports(2, 1,false)) {
+        qDebug("Requesting 2.1 context");
+        fmt.setVersion(2, 1);
         fmt.setRenderableType(QSurfaceFormat::OpenGL);
-        fmt.setProfile(QSurfaceFormat::CoreProfile);
-    } else if (OGLSupports(3,0,true)) {
+        fmt.setProfile(QSurfaceFormat::NoProfile);
+    }
+    // Core context doesn't play well with MapboxGL, since it requires #version directives in GLSL
+//    else if (OGLSupports(3, 3,false,false)) {
+//        qDebug("Requesting 3.3 core context");
+//        fmt.setVersion(3, 3);
+//        fmt.setRenderableType(QSurfaceFormat::OpenGL);
+//        fmt.setProfile(QSurfaceFormat::CoreProfile);
+//    }
+    else if (OGLSupports(3,0,true)) {
         qDebug("Requesting 3.0 GLES context");
         fmt.setVersion(3, 0);
         fmt.setRenderableType(QSurfaceFormat::OpenGLES);
-    } else {
+    }
+    else {
         qWarning("Error: OpenGL support is too old. Exiting.");
         return -1;
     }
