@@ -35,7 +35,7 @@ Window {
         color: 'transparent'
         plugin: plugins.mapboxgl
         zoomLevel: 17
-        activeMapType: map.supportedMapTypes[3]
+        activeMapType: map.supportedMapTypes[4]
         fieldOfView: 90
         center: QtPositioning.coordinate(37.562984, -122.514426)
 
@@ -49,17 +49,15 @@ Window {
                 { longitude: -122.51309394836426, latitude: 37.563391708549425},
                 { longitude: -122.51423120498657, latitude: 37.56161849366671}
             ]
-            z: markerTest.z + 1
+            z: mapVideo.z + 1
         }
 
-        onSupportedMapTypesChanged: {
-            console.log("Plugin changed")
-            markerTest.updateSize()
-            //map.center = QtPositioning.coordinate(37.562984, -122.514426)
+        onMapReadyChanged: {
+            mapVideo.updateSize()
         }
 
         MapQuickItem {
-            id: markerTest
+            id: mapVideo
 
             coordinate: QtPositioning.coordinate(37.56238816766053, -122.51596391201019)
             zoomLevel: 17
@@ -69,9 +67,8 @@ Window {
                 return Qt.point(a.x - b.x, a.y - b.y)
             }
 
-            function updateSize() {
-                map.zoomLevel = 17
-
+            function updateSize()
+            {
                 var tl = map.fromCoordinate(poly.path[0], false)
                 var tr = map.fromCoordinate(poly.path[1], false)
                 var br = map.fromCoordinate(poly.path[2], false)
