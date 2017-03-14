@@ -122,9 +122,6 @@ Window {
                 }
             }
         }
-        onCenterChanged : {
-            console.log(map.center.latitude+" "+map.center.longitude);
-        }
     }
 
     Plugin {
@@ -136,3 +133,49 @@ Window {
         name: "itemsoverlay"
     }
 }
+
+
+
+// Simpler example
+//import QtQuick 2.7
+//import QtQuick.Window 2.2
+//import QtQuick.Controls 1.4
+//import QtPositioning 5.6
+//import QtLocation 5.9
+//import LocationComponents 1.0
+//Window {
+//    id: win
+//    visible: true
+//    width: 640
+//    height: 640
+
+//    Map {
+//        id: map
+//        anchors.fill: parent
+//        plugin: Plugin { name: "osm" }
+//        center: QtPositioning.coordinate(18.859820495687384, 50.164062499994515)
+//        zoomLevel: 18.0
+//        tilt: 70
+//        bearing: 180
+//        fieldOfView: 90
+
+//        MapQuickItem {
+//            id: mqi
+//            zoomLevel: 1.32
+//            anchorPoint.x: sourceItem.width / 2
+//            anchorPoint.y: sourceItem.height / 2
+//            coordinate: QtPositioning.coordinate(19,50)
+
+//            sourceItem: Rectangle{
+//                width:40
+//                height:40
+//                color:'red'
+
+//                MouseArea{
+//                    anchors.fill: parent
+//                    drag.target: mqi
+//                }
+//            }
+//        }
+//    }
+//}

@@ -54,16 +54,28 @@ Window {
 
     Map {
         id: mapBase
-        gesture.enabled: true
+        gesture.enabled: false
         anchors.fill: parent
         opacity: 1.0
         color: 'transparent'
         plugin: osmPlugin
-        center: QtPositioning.coordinate(45,10)
+
         activeMapType: supportedMapTypes[0]
-        zoomLevel: 4
-        z : parent.z + 1
+
+        z : mapOverlay.z - 1
         copyrightsVisible: win.copyVisible
+
+        center: mapOverlay.center
+        minimumFieldOfView: mapOverlay.minimumFieldOfView
+        maximumFieldOfView: mapOverlay.maximumFieldOfView
+        minimumTilt: mapOverlay.minimumTilt
+        maximumTilt: mapOverlay.maximumTilt
+        minimumZoomLevel: mapOverlay.minimumZoomLevel
+        maximumZoomLevel: mapOverlay.maximumZoomLevel
+        zoomLevel: mapOverlay.zoomLevel
+        tilt: mapOverlay.tilt;
+        bearing: mapOverlay.bearing
+        fieldOfView: mapOverlay.fieldOfView
     }
 
     Map {
@@ -71,20 +83,14 @@ Window {
         opacity: 1.0
         anchors.fill: parent
         plugin: nomap
-        gesture.enabled: false
-        center: mapBase.center
+        zoomLevel: 4
+        center: QtPositioning.coordinate(45,10)
+
         color: 'transparent'
-        minimumFieldOfView: mapBase.minimumFieldOfView
-        maximumFieldOfView: mapBase.maximumFieldOfView
-        minimumTilt: mapBase.minimumTilt
-        maximumTilt: mapBase.maximumTilt
-        minimumZoomLevel: mapBase.minimumZoomLevel
-        maximumZoomLevel: mapBase.maximumZoomLevel
-        zoomLevel: mapBase.zoomLevel
-        tilt: mapBase.tilt;
-        bearing: mapBase.bearing
-        fieldOfView: mapBase.fieldOfView
-        z: mapBase.z + 1
+
+
+
+        z: parent.z + 2
         copyrightsVisible: win.copyVisible
 
         MapItemGroupFlower {
@@ -111,7 +117,7 @@ Window {
     MapSliders {
         id: sliders
         z: mapOverlay.z + 1
-        mapSource: mapBase
+        mapSource: mapOverlay
     }
 
     Plugin {

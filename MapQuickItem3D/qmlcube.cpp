@@ -76,7 +76,7 @@ QmlCubeRenderNode::~QmlCubeRenderNode()
 static QByteArray versionedShaderCode(const char *src)
 {
     QByteArray versionedSrc;
-    versionedSrc.append(QByteArrayLiteral("#version 300 es\n"));
+    versionedSrc.append(QByteArrayLiteral("#version 410\n"));
     versionedSrc.append(src);
     return versionedSrc;
 }
