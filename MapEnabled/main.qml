@@ -48,25 +48,64 @@ import LocationComponents 1.0
 Window {
     id: win
     visible: true
-    width: 960
-    height: 960
+    width: 640
+    height: 640
+    property var copyVisible : false
 
     GeoservicePlugins {
         id: plugins
     }
 
-    MapWithSliders {
+    Map {
+        id: mapBase
+        opacity: 1.0
+        anchors.fill: parent
+        plugin: plugins.mapbox
+        activeMapType: mapBase.supportedMapTypes[1]
+        gesture.enabled: false
+        center: map.center
+        zoomLevel: map.zoomLevel
+        tilt: map.tilt;
+        bearing: map.bearing
+        fieldOfView: map.fieldOfView
+        z: parent.z + 1
+        copyrightsVisible: win.copyVisible
+    }
+
+    Map {
         id: map
+        gesture.enabled: true
         anchors.fill: parent
         opacity: 1.0
         color: 'transparent'
-        plugin: plugins.osm
+        plugin: Plugin {
+            name: "tileoverlay"
+        }
         center: QtPositioning.coordinate(45,10)
-        activeMapType: map.supportedMapTypes[0]
-        zoomLevel: 1
+        zoomLevel: 4
+        z : mapBase.z + 1
+        copyrightsVisible: win.copyVisible
 
-        MapCircleSouthPole {
-            opacity: 0.5
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                console.log("clicked")
+                mapBase.visible = !mapBase.visible
+            }
         }
     }
+
+    MapCrosshair {
+        width: 20
+        height: 20
+        anchors.centerIn: parent
+        z: map.z + 1
+    }
+
+    MapSliders {
+        id: sliders
+        z: map.z + 1
+        mapSource: map
+    }
+
 }

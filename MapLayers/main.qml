@@ -60,7 +60,7 @@ Window {
         id: mapBase
         opacity: 1.0
         anchors.fill: parent
-        plugin: plugins.osm
+        plugin: plugins.mapboxgl
         activeMapType: mapBase.supportedMapTypes[1]
         gesture.enabled: false
         center: map.center
@@ -77,11 +77,11 @@ Window {
         gesture.enabled: true
         objectName: "mapComponent"
         anchors.fill: parent
-        opacity: 1.0
+        opacity: 0.5
         color: 'transparent'
         plugin: plugins.osm
         center: QtPositioning.coordinate(45,10)
-        activeMapType: map.supportedMapTypes[map.supportedMapTypes.length - 1]
+        activeMapType: map.supportedMapTypes[0] //map.supportedMapTypes[map.supportedMapTypes.length - 1]
         zoomLevel: 4
         z : mapBase.z + 1
         copyrightsVisible: win.copyVisible

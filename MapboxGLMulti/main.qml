@@ -77,11 +77,11 @@ Window {
         gesture.enabled: true
         objectName: "mapComponent"
         anchors.fill: parent
-        opacity: 0.6
+        opacity: 0.4
         color: 'transparent'
-        plugin: plugins.mapboxgl
+        plugin: plugins.osm
         center: QtPositioning.coordinate(45,10)
-        activeMapType: map.supportedMapTypes[0]
+        activeMapType: map.supportedMapTypes[5]
         zoomLevel: 4
         z : mapBase.z + 1
         copyrightsVisible: win.copyVisible
@@ -90,7 +90,7 @@ Window {
     MapSliders {
         id: sliders
         z: map.z + 1
-        map: map
+        mapSource: map
     }
 
     MapCrosshair {

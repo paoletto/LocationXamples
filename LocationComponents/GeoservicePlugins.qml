@@ -171,6 +171,11 @@ Item {
         name: "esri"
     }
 
+    Plugin {
+        id: tileOverlay
+        name: "tileoverlay"
+    }
+
 // Somehow not working in here
 //    Plugin {
 //        id: testPlugin;

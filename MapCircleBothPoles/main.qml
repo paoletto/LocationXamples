@@ -63,7 +63,7 @@ Window {
         plugin: plugins.osm
         center: QtPositioning.coordinate(45,10)
         activeMapType: map.supportedMapTypes[0]
-        zoomLevel: 4
+        zoomLevel: 1
 
         MapCircleBothPoles {
             opacity: 0.5
