@@ -61,12 +61,12 @@ QQW.Window {
         anchors.fill: parent
         opacity: 1.0
         color: 'transparent'
-        plugin: plugins.mapboxgl
+        plugin: plugins.mapbox
         center: QtPositioning.coordinate(18.859820495687384, 50.164062499994515)//QtPositioning.coordinate(45,10)
-        //activeMapType: map.supportedMapTypes[0]
+        activeMapType: map.supportedMapTypes[0]
         zoomLevel: 2.0
-        copyrightsVisible: win.copyVisible
-        fieldOfView: 90
+        //copyrightsVisible: win.copyVisible
+        //fieldOfView: 90
 
 
         MapQuickItem{
@@ -98,8 +98,8 @@ QQW.Window {
         }
     }
 
-    Plugin {
-        id: itemsoverlay
-        name: "itemsoverlay"
-    }
+//    Plugin {
+//        id: itemsoverlay
+//        name: "itemsoverlay"
+//    }
 }

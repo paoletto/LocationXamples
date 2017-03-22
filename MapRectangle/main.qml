@@ -67,7 +67,12 @@ Window {
         zoomLevel: 4
         copyrightsVisible: win.copyVisible
 
-        MapPolylineUSA {
+        MapRectangle {
+            topLeft: QtPositioning.coordinate(40, 10)
+            bottomRight: QtPositioning.coordinate(38, 13)
+            color: "deepskyblue"
+            x: 40
+            //width: 300
         }
     }
 }

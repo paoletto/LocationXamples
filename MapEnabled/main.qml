@@ -60,8 +60,8 @@ Window {
         id: mapBase
         opacity: 1.0
         anchors.fill: parent
-        plugin: plugins.mapbox
-        activeMapType: mapBase.supportedMapTypes[1]
+        plugin: Plugin { name: "itemsoverlay" } //plugins.mapbox
+        //activeMapType: mapBase.supportedMapTypes[1]
         gesture.enabled: false
         center: map.center
         zoomLevel: map.zoomLevel
@@ -85,6 +85,10 @@ Window {
         zoomLevel: 4
         z : mapBase.z + 1
         copyrightsVisible: win.copyVisible
+
+        onMapReadyChanged: {
+            clearData()
+        }
 
         MouseArea {
             anchors.fill: parent

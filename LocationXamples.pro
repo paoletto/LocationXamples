@@ -26,6 +26,7 @@ MapPluginOsmHiDpi \
 MapPluginOsmOffline \
 MapPolygonSelfIntersections \
 MapPolyline \
+MapRectangle \
 MapQuickItem3D \
 MapQuickItemVideo \
 MapQuickItemZoom \

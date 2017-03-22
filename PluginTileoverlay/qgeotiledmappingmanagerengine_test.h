@@ -95,7 +95,7 @@ public:
         fetcher->setTileSize(tileSize());
         setTileFetcher(fetcher);
 
-        QGeoFileTileCache *tileCache = new QGeoFileTileCache("");
+        QGeoFileTileCache *tileCache = new QGeoFileTileCache(QAbstractGeoTileCache::baseLocationCacheDirectory() + QLatin1String("tileoverlay"));
         tileCache->setMaxDiskUsage(0);
         tileCache->setMaxMemoryUsage(100 * 1024 * 1024);
         setTileCache(tileCache);
@@ -103,7 +103,9 @@ public:
 
     QGeoMap *createMap()
     {
-        return new QGeoTiledMapTest(this);
+        QGeoTiledMap *map = new QGeoTiledMapTest(this);
+        //map->setPrefetchStyle(QGeoTiledMap::NoPrefetching);
+        return map;
     }
 
 };

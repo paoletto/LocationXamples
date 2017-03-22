@@ -82,11 +82,11 @@ int main(int argc, char *argv[])
     QSurfaceFormat fmt;
     fmt.setDepthBufferSize(24);
 
-    if (OGLSupports(4,1,false,QSurfaceFormat::CoreProfile)) {
-        qDebug("Requesting 4.1 core context");
-        fmt.setVersion(4, 1);
+    if (OGLSupports(3,3,false,QSurfaceFormat::CompatibilityProfile)) {
+        qDebug("Requesting 3.3 core context");
+        fmt.setVersion(3, 3);
         fmt.setRenderableType(QSurfaceFormat::OpenGL);
-        fmt.setProfile(QSurfaceFormat::CoreProfile);
+        fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
     }
     else {
         qWarning("Error: OpenGL support is too old. Exiting.");
