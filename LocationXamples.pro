@@ -22,6 +22,7 @@ MapPluginMapbox \
 MapPluginMapboxGL \
 MapPluginMapboxHiDpi \
 MapPluginMapboxTokenEnvironment \
+MapPluginOpenaccess \
 MapPluginOsmHiDpi \
 MapPluginOsmOffline \
 MapPolygonSelfIntersections \
