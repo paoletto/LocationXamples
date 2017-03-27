@@ -97,7 +97,10 @@ Window {
         var plugin_names = availablePluginNames()
         for (var i = 0; i < plugin_names.length; i++) {
             var plugin
-            plugin = Qt.createQmlObject ('import QtLocation 5.9; Plugin{ name:"' + plugin_names[i] + '"}', win)
+            if (plugin_names[i] === "mapboxgl")
+                plugin = Qt.createQmlObject ('import QtLocation 5.9; Plugin { name: "mapboxgl";  PluginParameter{ name: "mapboxgl.mapping.use_fbo"; value: false}  }', win)
+            else
+                plugin = Qt.createQmlObject ('import QtLocation 5.9; Plugin{ name:"' + plugin_names[i] + '"}', win)
 
             geoservicePlugins.push(plugin)
             geoservicePluginsDict[plugin_names[i]] = plugin
