@@ -20,6 +20,7 @@ MapPluginHere \
 MapPluginHereHiDpi \
 MapPluginMapbox \
 MapPluginMapboxGL \
+MapPluginMapboxGLExp \
 MapPluginMapboxHiDpi \
 MapPluginMapboxTokenEnvironment \
 MapPluginOpenaccess \
