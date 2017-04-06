@@ -39,20 +39,51 @@
 ****************************************************************************/
 
 import QtQuick 2.4
-import QtLocation 5.9
+import QtLocation 5.6
 import LocationComponents 1.0
 
 Item {
     id: plugins
 
-    property var osm : osmPlugin
-    property var osmHiDpi : osmPluginHiDpi
-    property var esri: esriPlugin
+    property var osm : undefined
+    property var osmHiDpi : undefined
+    property var esri: undefined
+    property var tileOverlay : undefined
     property var here: herePlugin
     property var hereHiDpi: herePluginHiDpi
     property var mapbox: mapboxPlugin
     property var mapboxHiDpi: mapboxPluginHiDpi
     property var mapboxgl: mapboxglPlugin
+
+    property var pluginParameters : undefined
+    // Assumes QTLOCATION_PLUGIN_PARAMETERS_URL points to a json file containing all the common params for the
+    // plugins, such as tokens and such.
+    property var pluginParameterJsonUrl: SystemEnvironment.variable("QTLOCATION_PLUGIN_PARAMETERS_URL")
+    onPluginParameterJsonUrlChanged: {
+        console.log(pluginParameterJsonUrl)
+        var request = new XMLHttpRequest()
+        // NOTE: does not work with qrc:/ , only file:/// or remote
+        request.open('GET', pluginParameterJsonUrl, false) // false makes the request synchronous
+        request.send()
+        if (request.readyState !== XMLHttpRequest.DONE)
+            return ""
+        var data = request.responseText
+        var JsonObject= JSON.parse(data);
+
+        var params = []
+
+        for (var key in JsonObject) {
+            var parameter = Qt.createQmlObject(
+                        "import QtQuick 2.0;
+                         import QtLocation 5.6;
+                         PluginParameter {
+                             name: '" + key + "' ;
+                             value: '"+ JsonObject[key] +"';
+                         }", plugins, "");
+            params.push(parameter)
+        }
+        pluginParameters = params
+    }
 
     property var mapboxAccessToken: SystemEnvironment.variable("MAPBOX_ACCESS_TOKEN")
     property var hereAppId: SystemEnvironment.variable("HERE_APP_ID")
@@ -63,6 +94,10 @@ Item {
         name: "osm"
         PluginParameter{ name: "osm.mapping.custom.host"; value: "http://c.tiles.wmflabs.org/hillshading/"}
         PluginParameter{ name: "osm.mapping.custom.mapcopyright"; value: "The <a href='https://wikimediafoundation.org/wiki/Terms_of_Use'>WikiMedia Foundation</a>"}
+
+        Component.onCompleted: {
+            plugins.osm = osmPlugin
+        }
     }
 
     Plugin {
@@ -71,109 +106,92 @@ Item {
         PluginParameter{ name: "osm.mapping.custom.host"; value: "http://c.tiles.wmflabs.org/hillshading/"}
         PluginParameter{ name: "osm.mapping.custom.mapcopyright"; value: "The <a href='https://wikimediafoundation.org/wiki/Terms_of_Use'>WikiMedia Foundation</a>"}
         PluginParameter{ name: "osm.mapping.highdpi_tiles"; value: true}
+
+        Component.onCompleted: {
+            plugins.osmHiDpi = osmPluginHiDpi
+        }
     }
 
 
-    property var mapboxglPlugin
-    property var herePlugin
+    property var mapboxglPlugin : undefined
+    property var herePlugin : undefined
 
-    property var mapboxPluginHiDpi
-    property var herePluginHiDpi
+    property var mapboxPluginHiDpi : undefined
+    property var herePluginHiDpi : undefined
 
-// DOESNT WORK
-//    Plugin {
-//        id: mapboxPlugin
-//        name: 'mapboxgl';
-//        PluginParameter {
-//            name: "mapboxgl.access_token"
-//            value: SystemEnvironment.variable("MAPBOX_ACCESS_TOKEN")
-//        }
-//    }
-    property var mapboxPlugin
-    onMapboxAccessTokenChanged: {
-        mapboxPlugin = Qt.createQmlObject(
-                   "import QtQuick 2.4;
-                    import QtLocation 5.9;
-                    Plugin {
-                        name: 'mapbox';
-                        PluginParameter {
-                            name: \"mapbox.access_token\" ;
-                            value: '"+mapboxAccessToken+"';
-                        }
-                    }", win, "");
+    property var mapboxPlugin : undefined
+    onPluginParametersChanged: {
+        if (plugins.pluginParameters === undefined)
+            return
 
         mapboxglPlugin = Qt.createQmlObject(
                    "import QtQuick 2.4;
-                    import QtLocation 5.9;
+                    import QtLocation 5.6;
                     Plugin {
                         name: 'mapboxgl';
-                        PluginParameter {
-                            name: \"mapboxgl.access_token\" ;
-                            value: '"+mapboxAccessToken+"';
-                        }
-                    }", win, "");
+                        parameters: plugins.pluginParameters
+                    }", plugins, "");
+
+        mapboxPlugin = Qt.createQmlObject(
+                   "import QtQuick 2.4;
+                    import QtLocation 5.6;
+                    Plugin {
+                        name: 'mapbox';
+                        parameters: plugins.pluginParameters
+                    }", plugins, "");
 
         mapboxPluginHiDpi = Qt.createQmlObject(
                    "import QtQuick 2.4;
-                    import QtLocation 5.9;
+                    import QtLocation 5.6;
                     Plugin {
                         name: 'mapbox';
                         PluginParameter {
-                            name: \"mapbox.access_token\" ;
-                            value: '"+mapboxAccessToken+"';
-                        }
-                        PluginParameter {
+                            id: par
                             name: \"mapbox.mapping.highdpi_tiles\" ;
                             value: true;
                         }
-                    }", win, "");
-    }
+                        parameters: plugins.pluginParameters.concat(par)
+                    }", plugins, "");
 
-    onHereTokenChanged: {
         herePlugin = Qt.createQmlObject(
                    "import QtQuick 2.4;
-                    import QtLocation 5.9;
+                    import QtLocation 5.6;
                     Plugin {
                         name: 'here';
-                        PluginParameter {
-                            name: \"here.app_id\" ;
-                            value: '"+hereAppId+"';
-                        }
-                        PluginParameter {
-                            name: \"here.token\" ;
-                            value: '"+hereToken+"';
-                        }
-                    }", win, "");
+                        parameters: plugins.pluginParameters
+                    }", plugins, "");
 
         herePluginHiDpi = Qt.createQmlObject(
                    "import QtQuick 2.4;
-                    import QtLocation 5.9;
+                    import QtLocation 5.6;
                     Plugin {
                         name: 'here';
                         PluginParameter {
-                            name: \"here.app_id\" ;
-                            value: '"+hereAppId+"';
-                        }
-                        PluginParameter {
-                            name: \"here.token\" ;
-                            value: '"+hereToken+"';
-                        }
-                        PluginParameter {
+                            id: par
                             name: \"here.mapping.highdpi_tiles\" ;
                             value: true;
                         }
-                    }", win, "");
+                        parameters: plugins.pluginParameters.concat(par)
+                    }", plugins, "");
 
     }
 
     Plugin {
         id: esriPlugin
         name: "esri"
+
+        Component.onCompleted: {
+            plugins.esri = esriPlugin
+        }
     }
 
     Plugin {
-        id: tileOverlay
+        id: to
         name: "tileoverlay"
+
+        Component.onCompleted: {
+            plugins.tileOverlay = to
+        }
     }
 
 // Somehow not working in here

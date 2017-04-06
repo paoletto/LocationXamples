@@ -70,9 +70,9 @@ Window {
                 //if (allowed.indexOf(plugin.availableServiceProviders[i]) >= 0 )
                 {
                     var tempPlugin
-                    if (plugin.availableServiceProviders[i] === "mapboxgl")
-                       tempPlugin = Qt.createQmlObject ('import QtLocation 5.9; Plugin { name: "mapboxgl";  PluginParameter{ name: "mapboxgl.mapping.use_fbo"; value: false}  }', win)
-                    else
+//                    if (plugin.availableServiceProviders[i] === "mapboxgl")
+//                       tempPlugin = Qt.createQmlObject ('import QtLocation 5.9; Plugin { name: "mapboxgl";  PluginParameter{ name: "mapboxgl.mapping.use_fbo"; value: false}  }', win)
+//                    else
                         tempPlugin = Qt.createQmlObject ('import QtLocation 5.9; Plugin {name: "' + plugin.availableServiceProviders[i]+ '"}', win)
                     if (tempPlugin.supportsMapping())
                         arr.push(tempPlugin.name)
@@ -97,9 +97,9 @@ Window {
         var plugin_names = availablePluginNames()
         for (var i = 0; i < plugin_names.length; i++) {
             var plugin
-            if (plugin_names[i] === "mapboxgl")
-                plugin = Qt.createQmlObject ('import QtLocation 5.9; Plugin { name: "mapboxgl";  PluginParameter{ name: "mapboxgl.mapping.use_fbo"; value: false}  }', win)
-            else
+//            if (plugin_names[i] === "mapboxgl")
+//                plugin = Qt.createQmlObject ('import QtLocation 5.9; Plugin { name: "mapboxgl";  PluginParameter{ name: "mapboxgl.mapping.use_fbo"; value: false}  }', win)
+//            else
                 plugin = Qt.createQmlObject ('import QtLocation 5.9; Plugin{ name:"' + plugin_names[i] + '"}', win)
 
             geoservicePlugins.push(plugin)
@@ -164,10 +164,10 @@ Window {
         color: 'transparent'
         plugin: Plugin {
             name: "mapboxgl";
-            PluginParameter{
-                name: "mapboxgl.mapping.use_fbo";
-                value: false
-            }
+//            PluginParameter{
+//                name: "mapboxgl.mapping.use_fbo";
+//                value: false
+//            }
         }
         center: QtPositioning.coordinate(45,10)
         activeMapType: map.supportedMapTypes[0]

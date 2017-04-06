@@ -41,6 +41,7 @@
 import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
 import QtPositioning 5.6
 import QtLocation 5.9
 import LocationComponents 1.0
@@ -50,38 +51,106 @@ Window {
     visible: true
     width: 640
     height: 640
-    property var copyVisible : false
+    property var copyVisible : true
 
     GeoservicePlugins {
         id: plugins
     }
 
-    Map {
-        id: map
-        anchors.fill: parent
-        opacity: 1.0
-        color: 'transparent'
-        plugin: plugins.osm
-        center: QtPositioning.coordinate(45,10)
-        activeMapType: map.supportedMapTypes[0]
-        zoomLevel: 4
-        copyrightsVisible: win.copyVisible
+    Item { //PluginManager {
+        id: pluginManager
 
-        Component.objectName: {
-            LocationTools.addMeridians(map, "fuchsia", 1)
+//        Component.onCompleted: {
+//            var params = []
+//            params.push(
+//                Qt.createQmlObject (
+//                            'import QtLocation 5.6;'
+//                           +'PluginParameter { '
+//                           +'name: "openaccess.mapping.providers.parameters_address";'
+//                           +'value: "file:///media/paolo/qdata/home/paolo/Qt/Location/playground/tmsServers.git/providersParameters.json"}',
+//                            pluginManager)
+//            )
+//            pluginManager.setPluginParameters(params)
+
+//            console.log("GETTING MAP TYPES")
+
+//            var mapTypeNames = pluginManager.getMapTypeNames()
+//            var mapTypes = pluginManager.getMapTypes()
+//            for (var k in mapTypeNames) {
+//                console.log(k)
+//                for (var t in mapTypeNames[k])
+
+//                    if (mapTypeNames[k][t].constructor === Array) {
+//                        console.log(" "+t)
+//                        for (var j in mapTypeNames[k][t])
+//                            console.log("  " + mapTypeNames[k][t][j] + " : " +
+//                                        mapTypes[mapTypeNames[k][t][j]]["displayName"])
+//                    } else {
+//                        console.log("  "+ mapTypeNames[k][t] + " : " +
+//                                    mapTypes[mapTypeNames[k][t]]["displayName"])
+//                    }
+//            }
+//        }
+    }
+
+    Item {
+        id: mapContainer
+        anchors.fill: parent
+
+        property var center : mapItems.center
+        property var zoomLevel: mapItems.zoomLevel
+        property var tilt: mapItems.tilt
+        property var bearing: mapItems.bearing
+        property var fieldOfView: mapItems.fieldOfView
+
+//        Map {
+//            id: mapBase
+//            anchors.fill: parent
+//            color: 'transparent'
+//            plugin: plugins.mapboxHiDpi
+//            activeMapType: mapBase.supportedMapTypes[1]
+//            copyrightsVisible: false
+
+//            center: parent.center
+//            zoomLevel: parent.zoomLevel
+//            tilt: parent.tilt
+//            bearing: parent.bearing
+//            fieldOfView: parent.fieldOfView
+//        }
+
+
+        Map {
+            id: mapItems
+            anchors.fill: parent
+            opacity: 1.0
+            color: 'transparent'
+            plugin: Plugin { name: "itemsoverlay" }
+            center: QtPositioning.coordinate(45,10)
+            activeMapType: mapItems.supportedMapTypes[0]
+            zoomLevel: 4
+            copyrightsVisible: false
+            z: parent.z + 100 // Topmost
+
+            Component.onCompleted: {
+                LocationTools.addMeridians(mapItems, "fuchsia", 1)
+                LocationTools.addParallels(mapItems, "green", 1)
+            }
         }
     }
+
+
 
     MapCrosshair {
         width: 20
         height: 20
         anchors.centerIn: parent
-        z: map.z + 1
+        z: mapItems.z + 1
     }
 
-    MapSliders {
-        id: sliders
-        z: map.z + 1
-        map: map
+    LocationMenuBar {
+        id: menuBar
+        edge: Qt.LeftEdge
+        mapSource: mapItems
+        mapContainer: mapContainer
     }
 }

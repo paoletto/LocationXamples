@@ -57,3 +57,46 @@ function addMeridians(map, color, thickness) {
         longi = longi + 10.0
     }
 }
+
+function addParallels(map, color, thickness) {
+    var lati = -80.0
+    for (var i=0; i<16; i++) {
+        var parallelColor = color
+        if (lati == 0.0)
+            parallelColor = "red"
+/* Single line, disappears very easily
+        var line = Qt.createQmlObject ("import QtQuick 2.5;"
+                                      +"import QtLocation 5.6;"
+                                      +"MapPolyline {"
+                                      +"line.width: "+ thickness +";"
+                                      +"line.color: '"+parallelColor+"'"
+                                      +"}", map)
+        line.addCoordinate(QtPositioning.coordinate(lati,-180.0))
+        line.addCoordinate(QtPositioning.coordinate(lati, -90.0))
+        line.addCoordinate(QtPositioning.coordinate(lati,   0.0))
+        line.addCoordinate(QtPositioning.coordinate(lati,  90.0))
+        line.addCoordinate(QtPositioning.coordinate(lati, 179.9))
+        line.opacity = 0.4
+        map.addMapItem(line)
+*/
+        // one line per sector
+
+        var longi = -180.0
+        for (var j=0; j<36; j++) {
+            var line = Qt.createQmlObject ("import QtQuick 2.5;"
+                                          +"import QtLocation 5.6;"
+                                          +"MapPolyline {"
+                                          +"line.width: "+ thickness +";"
+                                          +"line.color: '"+parallelColor+"'"
+                                          +"}", map)
+
+            line.addCoordinate(QtPositioning.coordinate(lati,longi))
+            line.addCoordinate(QtPositioning.coordinate(lati,longi + 10.0))
+            line.opacity = 0.4
+            map.addMapItem(line)
+            longi = longi + 10.0
+        }
+
+        lati = lati + 10.0
+    }
+}

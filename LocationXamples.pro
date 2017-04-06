@@ -1,6 +1,8 @@
 TEMPLATE = subdirs
 
-SUBDIRS += MapAddMeridians \
+SUBDIRS += \
+LocationComponents \
+MapAddMeridians \
 MapboxGLMulti \
 MapCircleBothPoles \
 MapCircleNorthPole \

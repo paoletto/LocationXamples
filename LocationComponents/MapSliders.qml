@@ -61,62 +61,11 @@ Row {
     anchors.right: rightEdge() ? parent.right : undefined
     anchors.left: rightEdge() ? undefined : parent.left
 
-    Button {
+    property alias checked: sliderToggler.checked
+    visible: checked
+
+    PanelToggler {
         id: sliderToggler
-        width: 32
-        height: 96
-        checkable: true
-        checked: true
-        anchors.verticalCenter: parent.verticalCenter
-
-        transform:  Scale {
-                        origin.x: rightEdge() ? 0 : sliderToggler.width / 2
-                        xScale: rightEdge() ? 1 : -1
-                    }
-
-        style:  ButtonStyle {
-                    background: Rectangle {
-                        color: "transparent"
-                    }
-                }
-
-        property real shear: 0.333
-        property real buttonOpacity: 0.5
-        property real mirror : rightEdge() ? 1.0 : -1.0
-
-        Rectangle {
-            width: 16
-            height: 48
-            color: "seagreen"
-            antialiasing: true
-            opacity: sliderToggler.buttonOpacity
-            anchors.top: parent.top
-            anchors.left: sliderToggler.checked ?  parent.left : parent.horizontalCenter
-            transform: Matrix4x4 {
-                property real d : sliderToggler.checked ? 1.0 : -1.0
-                matrix:    Qt.matrix4x4(1.0,  d * sliderToggler.shear,    0.0,    0.0,
-                                        0.0,    1.0,    0.0,    0.0,
-                                        0.0,    0.0,    1.0,    0.0,
-                                        0.0,    0.0,    0.0,    1.0)
-            }
-        }
-
-        Rectangle {
-            width: 16
-            height: 48
-            color: "seagreen"
-            antialiasing: true
-            opacity: sliderToggler.buttonOpacity
-            anchors.top: parent.verticalCenter
-            anchors.right: sliderToggler.checked ?  parent.right : parent.horizontalCenter
-            transform: Matrix4x4 {
-                property real d : sliderToggler.checked ? -1.0 : 1.0
-                matrix:    Qt.matrix4x4(1.0,  d * sliderToggler.shear,    0.0,    0.0,
-                                        0.0,    1.0,    0.0,    0.0,
-                                        0.0,    0.0,    1.0,    0.0,
-                                        0.0,    0.0,    0.0,    1.0)
-            }
-        }
     }
 
     Rectangle {

@@ -44,7 +44,7 @@
 #include <QVariant>
 
 QT_BEGIN_NAMESPACE
-
+class QGeoMappingManagerEngine;
 class TiledMapReplyTest :public QGeoTiledMapReply
 {
     Q_OBJECT
@@ -65,7 +65,7 @@ class QGeoTileFetcherTest: public QGeoTileFetcher
 {
     Q_OBJECT
 public:
-    QGeoTileFetcherTest(QObject *parent = 0)
+    QGeoTileFetcherTest(QGeoMappingManagerEngine *parent)
     :    QGeoTileFetcher(parent),
          backgroundColor_("lightgray"), textColor_("firebrick"), errorCode_(QGeoTiledMapReply::NoError)
     {

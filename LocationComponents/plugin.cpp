@@ -38,26 +38,29 @@
 **
 ****************************************************************************/
 
-#ifndef LOCATIONCOMPONENTS_H
-#define LOCATIONCOMPONENTS_H
-
+#include <QtQml/qqmlextensionplugin.h>
+#include <QtQml/qqml.h>
+#include "qmlsystemenvironment.h"
 #include <QDebug>
 
-#define str(x) #x
-#define xstr(x) str(x)
+QT_BEGIN_NAMESPACE
 
-#define registerLocationComponents(engine) \
-    { \
-        qDebug() << xstr(LOCATION_COMPONENTS_PWD); \
-        const QByteArray additionalLibraryPaths = qgetenv("QTLOCATION_EXTRA_LIBRARY_PATH"); \
-        for (const QByteArray &p : additionalLibraryPaths.split(':')) \
-            QCoreApplication::addLibraryPath(QString(p)); \
-        QCoreApplication::addLibraryPath(QString(xstr(LOCATION_COMPONENTS_PWD)) + "/PluginTileoverlay/bin"); \
-        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling); \
-        engine.addImportPath(xstr(LOCATION_COMPONENTS_PWD)); \
+class QQmlPresentationPlugin : public QQmlExtensionPlugin
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
+
+public:
+    void registerTypes(const char *uri)
+    {
+        Q_ASSERT(uri == QLatin1String("LocationComponents"));
+        Q_UNUSED(uri);
+        qDebug() << "registering stuff for " << uri;
+        qmlRegisterSingletonType<QmlSystemEnvironment>("LocationComponents", 1, 0, \
+                "SystemEnvironment", qmlsystemenvironment_singletontype_provider); \
     }
+};
 
-//    qmlRegisterSingletonType<QmlSystemEnvironment>("LocationComponents", 1, 0,
-//            "SystemEnvironment", qmlsystemenvironment_singletontype_provider);
+QT_END_NAMESPACE
 
-#endif
+#include "plugin.moc"

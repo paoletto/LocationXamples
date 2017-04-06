@@ -1,5 +1,5 @@
- 
 module LocationComponents
+plugin locationcomponents ../bin/imports/
 LocationTools                       1.0 LocationTools.js
 GeoservicePlugins                   1.0 GeoservicePlugins.qml
 MapSliders                          1.0 MapSliders.qml
@@ -13,4 +13,7 @@ MapCircleSouthPole                  1.0 MapCircleSouthPole.qml
 MapCircleNorthPole                  1.0 MapCircleNorthPole.qml
 MapCircleBothPoles                  1.0 MapCircleBothPoles.qml
 MapWithSliders                      1.0 MapWithSliders.qml
-
+PluginManager                       1.0 PluginManager.qml
+LayerManager                        1.0 LayerManager.qml
+LocationMenuBar                     1.0 LocationMenuBar.qml
+PanelToggler                        1.0 PanelToggler.qml
