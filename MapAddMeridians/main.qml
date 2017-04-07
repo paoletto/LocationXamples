@@ -152,5 +152,6 @@ Window {
         edge: Qt.LeftEdge
         mapSource: mapItems
         mapContainer: mapContainer
+        //pluginParametersJsonURL: someUrl  // define this if QTLOCATION_PLUGIN_PARAMETERS_URL isn't present
     }
 }

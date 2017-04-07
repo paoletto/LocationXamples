@@ -53,6 +53,7 @@ Rectangle {
     property var mapContainer
     property int edge: Qt.LeftEdge
     property alias pluginParameters: layerManager.pluginParameters
+    property alias pluginParametersJsonURL: layerManager.pluginParametersJsonURL
 
     function rightEdge() {
         return (container.edge === Qt.RightEdge);

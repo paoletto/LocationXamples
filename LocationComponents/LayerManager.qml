@@ -54,6 +54,7 @@ Rectangle {
     property color labelBackground : "transparent"
     property int edge: Qt.RightEdge
     property alias pluginParameters : pluginManager.pluginParameters
+    property alias pluginParametersJsonURL: pluginManager.pluginParameterJsonUrl
 
     property var maps : []
 
