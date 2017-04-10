@@ -17,3 +17,4 @@ PluginManager                       1.0 PluginManager.qml
 LayerManager                        1.0 LayerManager.qml
 LocationMenuBar                     1.0 LocationMenuBar.qml
 PanelToggler                        1.0 PanelToggler.qml
+Draggableitem                       1.0 DraggableItem.qml

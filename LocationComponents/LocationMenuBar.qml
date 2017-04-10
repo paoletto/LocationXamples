@@ -138,10 +138,10 @@ Rectangle {
                     return
 
                 if (containsMouse) {
-                    console.log("hovering")
+                    //console.log("hovering")
                     bar.state = "EXPANDED"
                 } else {
-                    console.log("not hovering")
+                    //console.log("not hovering")
                     bar.state = "COLLAPSED"
                 }
             }

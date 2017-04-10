@@ -135,6 +135,14 @@ Window {
                 LocationTools.addMeridians(mapItems, "fuchsia", 1)
                 LocationTools.addParallels(mapItems, "green", 1)
             }
+
+            MouseArea {
+                anchors.fill: parent
+                onDoubleClicked: {
+                    parent.center = parent.toCoordinate(Qt.point(mouse.x, mouse.y))
+                    parent.zoomLevel = Math.floor(parent.zoomLevel + 1)
+                }
+            }
         }
     }
 

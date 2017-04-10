@@ -34,6 +34,7 @@ OTHER_FILES +=  LocationComponents.pri \
                 MapWithSliders.qml \
                 LayerManager.qml \
                 PanelToggler.qml \
+                DraggableItem.qml \
                 LocationComponents.qrc
 
 

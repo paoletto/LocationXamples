@@ -249,9 +249,9 @@ Rectangle {
                                                 Drag.active: ma.drag.active
                                                 Drag.dragType: (!model.elements) ? Drag.Automatic : Drag.None
                                                 Drag.imageSource : "qrc:/LocationComponents/icons/icon_maplayer64.png"
-                                                Drag.onActiveChanged: console.log("active", active)
-                                                Drag.onDragStarted: console.log("rect drag started")
-                                                Drag.onDragFinished: console.log("rect drag finished")
+//                                                Drag.onActiveChanged: console.log("active", active)
+//                                                Drag.onDragStarted: console.log("rect drag started")
+//                                                Drag.onDragFinished: console.log("rect drag finished")
 
                                                 Text {
                                                     id: txt
@@ -308,11 +308,32 @@ Rectangle {
             color: 'transparent'
             center : parent.center
             zoomLevel: parent.zoomLevel
+            gesture.enabled: false
             tilt: parent.tilt
             bearing: parent.bearing
             fieldOfView: parent.fieldOfView
             z: parent.z + 1
         }
+    }
+
+    function updateLayersZ()
+    {
+        for (var i =0; i< enabledLayersModel.count; i++) {
+            enabledLayersModel.get(i).mapObject.z = i+1
+        }
+    }
+
+    function deleteMapItem(model, index)
+    {
+        //                                    console.log(model.key)
+        //                                    console.log(model.mapObject.plugin.name)
+        //                                    console.log(index)
+
+        var mapToDestroy = model.mapObject
+        mapToDestroy.destroy()
+        enabledLayersModel.remove(index)
+
+        updateLayersZ()
     }
 
     Rectangle {
@@ -379,7 +400,7 @@ Rectangle {
                 ListView {
                     id: listViewEnabled
                     model: enabledLayersModel
-                    delegate: Component {
+                    delegate: DraggableItem {
                         Rectangle {
                             height: textLabel.height * 2
                             width: listViewEnabled.width
@@ -392,8 +413,6 @@ Rectangle {
                                 text: model.text //+ " - idx " + index
                             }
 
-
-
                             // Bottom line border //container.maps[index]
                             Rectangle {
                                 anchors {
@@ -405,22 +424,20 @@ Rectangle {
                                 color: "lightgrey"
                             }
 
-                            MouseArea {
-                                id: ma
-                                anchors.fill: parent
+//                            MouseArea {
+//                                id: ma
+//                                anchors.fill: parent
 
-                                onDoubleClicked: {
-                                    console.log(model.key)
-                                    console.log(model.mapObject.plugin.name)
-                                    console.log(index)
-                                    var mapToDestroy = model.mapObject
-                                    mapToDestroy.destroy()
-                                    enabledLayersModel.remove(index)
+//                                onDoubleClicked: {
+////                                    console.log(model.key)
+////                                    console.log(model.mapObject.plugin.name)
+////                                    console.log(index)
+//                                    var mapToDestroy = model.mapObject
+//                                    mapToDestroy.destroy()
+//                                    enabledLayersModel.remove(index)
 
-                                    for (var i =0; i< enabledLayersModel.count; i++) {
-                                        enabledLayersModel.get(i).mapObject.z = i+1
-                                    }
-                                }
+//                                    updateLayersZ()
+//                                }
 
                                 CheckBox {
                                     id: checkBox
@@ -434,7 +451,14 @@ Rectangle {
                                         enabledLayersModel.get(index).mapObject.visible = checked
                                     }
                                 }
-                            }
+//                            }
+                        }
+
+                        draggedItemParent: enabledLayers
+
+                        onMoveItemRequested: {
+                            enabledLayersModel.move(from, to, 1);
+                            updateLayersZ()
                         }
                     }
                 }

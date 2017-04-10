@@ -123,7 +123,7 @@ Item {
             arr.sort()
             manager.pluginNames = arr;
             plugin.destroy()
-            console.log(arr)
+            //console.log(arr)
             return arr
         } else  {
             return manager.pluginNames
@@ -226,10 +226,10 @@ Item {
 
             if (key in manager.dummyMapsDict) {
             } else {
-                console.log("Initializing map for "+key)
+                //console.log("Initializing map for "+key)
                 var dummyMap = Qt.createQmlObject ('import QtLocation 5.6; Map { visible: false }', manager)
                 dummyMap.plugin = plugin_dict[key]
-                console.log(dummyMap.plugin.parameters)
+                //console.log(dummyMap.plugin.parameters)
                 manager.dummyMapsDict[key] = dummyMap
 
                 dummyMap.supportedMapTypesChanged.connect( manager.supportedMapTypesChanged )
