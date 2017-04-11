@@ -53,45 +53,9 @@ Window {
     height: 640
     property var copyVisible : true
 
-    GeoservicePlugins {
-        id: plugins
-    }
-
-    Item { //PluginManager {
-        id: pluginManager
-
-//        Component.onCompleted: {
-//            var params = []
-//            params.push(
-//                Qt.createQmlObject (
-//                            'import QtLocation 5.6;'
-//                           +'PluginParameter { '
-//                           +'name: "openaccess.mapping.providers.parameters_address";'
-//                           +'value: "file:///media/paolo/qdata/home/paolo/Qt/Location/playground/tmsServers.git/providersParameters.json"}',
-//                            pluginManager)
-//            )
-//            pluginManager.setPluginParameters(params)
-
-//            console.log("GETTING MAP TYPES")
-
-//            var mapTypeNames = pluginManager.getMapTypeNames()
-//            var mapTypes = pluginManager.getMapTypes()
-//            for (var k in mapTypeNames) {
-//                console.log(k)
-//                for (var t in mapTypeNames[k])
-
-//                    if (mapTypeNames[k][t].constructor === Array) {
-//                        console.log(" "+t)
-//                        for (var j in mapTypeNames[k][t])
-//                            console.log("  " + mapTypeNames[k][t][j] + " : " +
-//                                        mapTypes[mapTypeNames[k][t][j]]["displayName"])
-//                    } else {
-//                        console.log("  "+ mapTypeNames[k][t] + " : " +
-//                                    mapTypes[mapTypeNames[k][t]]["displayName"])
-//                    }
-//            }
-//        }
-    }
+//    GeoservicePlugins {
+//        id: plugins
+//    }
 
     Item {
         id: mapContainer
@@ -102,21 +66,6 @@ Window {
         property var tilt: mapItems.tilt
         property var bearing: mapItems.bearing
         property var fieldOfView: mapItems.fieldOfView
-
-//        Map {
-//            id: mapBase
-//            anchors.fill: parent
-//            color: 'transparent'
-//            plugin: plugins.mapboxHiDpi
-//            activeMapType: mapBase.supportedMapTypes[1]
-//            copyrightsVisible: false
-
-//            center: parent.center
-//            zoomLevel: parent.zoomLevel
-//            tilt: parent.tilt
-//            bearing: parent.bearing
-//            fieldOfView: parent.fieldOfView
-//        }
 
 
         Map {
@@ -136,11 +85,37 @@ Window {
                 LocationTools.addParallels(mapItems, "green", 1)
             }
 
+            property real transitionDuration: 300;
+
+            PropertyAnimation {
+                id: zlAnim;
+                target: mapItems;
+                property: "zoomLevel";
+                duration: mapItems.transitionDuration
+            }
+
+            CoordinateAnimation {
+                id: centerAnim;
+                target: mapItems;
+                property: "center";
+                duration: mapItems.transitionDuration
+            }
+
             MouseArea {
                 anchors.fill: parent
+                acceptedButtons: Qt.LeftButton | Qt.RightButton
                 onDoubleClicked: {
-                    parent.center = parent.toCoordinate(Qt.point(mouse.x, mouse.y))
-                    parent.zoomLevel = Math.floor(parent.zoomLevel + 1)
+                    centerAnim.from = parent.center
+                    centerAnim.to = parent.toCoordinate(Qt.point(mouse.x, mouse.y))
+                    if (mouse.button === Qt.LeftButton) {
+                        zlAnim.from = parent.zoomLevel
+                        zlAnim.to = Math.floor(parent.zoomLevel + 1)
+                    } else if (mouse.button === Qt.RightButton) {
+                        zlAnim.from = parent.zoomLevel
+                        zlAnim.to = Math.floor(parent.zoomLevel - 1)
+                    }
+                    zlAnim.start()
+                    centerAnim.start()
                 }
             }
         }
