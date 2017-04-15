@@ -32,6 +32,7 @@ MapPolygonSelfIntersections \
 MapPolyline \
 MapRectangle \
 MapQuickItem3D \
+MapDoubleClick \
 MapQuickItemVideo \
 MapQuickItemZoom \
 MapTileOverlay \

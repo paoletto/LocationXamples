@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file alias="pluginParameters.json">/home/paolo/Qt/Location/pluginParameters.json</file>
     </qresource>
 </RCC>

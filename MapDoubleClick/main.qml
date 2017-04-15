@@ -38,22 +38,66 @@
 **
 ****************************************************************************/
 
-#include "locationcomponents.h"
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-#include <QDirIterator>
+import QtQuick 2.7
+import QtQuick.Window 2.2
+import QtQuick.Controls 1.4
+import QtPositioning 5.6
+import QtLocation 5.9
 
-int main(int argc, char *argv[])
-{
-    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QGuiApplication app(argc, argv);
-    QQmlApplicationEngine engine;
-    registerLocationComponents(engine);
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+Window {
+    id: win
+    visible: true
+    width: 640
+    height: 640
+    property var copyVisible : false
 
-//    QDirIterator it(":/", QDirIterator::Subdirectories);
-//    while (it.hasNext())
-//        qDebug() << it.next();
+    Map {
+        id: map
+        anchors.fill: parent
+        opacity: 1.0
+        color: 'transparent'
+        plugin: Plugin { name: "osm" }
+        center: QtPositioning.coordinate(45,10)
+        activeMapType: map.supportedMapTypes[0]
+        zoomLevel: 4
+        copyrightsVisible: win.copyVisible
 
-    return app.exec();
+
+        property real transitionDuration: 300;
+
+        PropertyAnimation {
+            id: zlAnim;
+            target: map;
+            property: "zoomLevel";
+            duration: map.transitionDuration * 2
+            easing.type: Easing.Bezier
+            easing.bezierCurve: [0.47,1.03,0.36,0.944,1,1]
+        }
+
+        CoordinateAnimation {
+            id: centerAnim;
+            target: map;
+            property: "center";
+            duration: map.transitionDuration
+            //easing.type: Easing.Linear
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+            onDoubleClicked: {
+                centerAnim.from = parent.center
+                centerAnim.to = parent.toCoordinate(Qt.point(mouse.x, mouse.y))
+                if (mouse.button === Qt.LeftButton) {
+                    zlAnim.from = parent.zoomLevel
+                    zlAnim.to = Math.floor(parent.zoomLevel + 1)
+                } else if (mouse.button === Qt.RightButton) {
+                    zlAnim.from = parent.zoomLevel
+                    zlAnim.to = Math.floor(parent.zoomLevel - 1)
+                }
+                zlAnim.start()
+                centerAnim.start()
+            }
+        }
+    }
 }

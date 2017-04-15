@@ -41,19 +41,15 @@
 #include "locationcomponents.h"
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QDirIterator>
 
 int main(int argc, char *argv[])
 {
     QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QGuiApplication app(argc, argv);
+
     QQmlApplicationEngine engine;
     registerLocationComponents(engine);
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-
-//    QDirIterator it(":/", QDirIterator::Subdirectories);
-//    while (it.hasNext())
-//        qDebug() << it.next();
 
     return app.exec();
 }

@@ -94,40 +94,42 @@ Rectangle {
             var mtn = pluginManager.getMapTypeNames()
             var mapTypes = pluginManager.getMapTypes()
 
-//            var mtn = pluginManager.getMapTypeNames()
-//            var mapTypes = pluginManager.getMapTypes()
-//            for (var k in mtn) {
-//                console.log(k)
-//                for (var t in mtn[k])
+            var pluginNames = []
+            for (var tn in mapTypeNames)
+                pluginNames.push(tn)
+            pluginNames.sort()
 
-//                    if (mtn[k][t].constructor === Array) {
-//                        console.log(" "+t)
-//                        for (var j in mtn[k][t])
-//                            console.log("  " + mtn[k][t][j] + " : " +
-//                                        mapTypes[mtn[k][t][j]]["displayName"])
-//                    } else {
-//                        console.log("  "+ mtn[k][t] + " : " +
-//                                    mapTypes[mtn[k][t]]["displayName"])
-//                    }
-//            }
-
-            for (var k in mapTypeNames) { // k = PluginName
-                var le = { text: k }
+            for (var pni in pluginNames) { // k = PluginName
+                var k = pluginNames[pni]
+                var le = { text: k, root: true }
                 var elems = []
 
-                for (var t in mtn[k]) { // The plugin map types/categories
-                    var leNode = { text: t }
+                var pluginNodeNames = []
+                for (var pnn in mtn[k])
+                    pluginNodeNames.push(pnn)
+                pluginNodeNames.sort()
+
+
+                for (var pnni in pluginNodeNames) { // The plugin map types/categories
+                    var t = pluginNodeNames[pnni]
+                    var leNode = { text: t, root: false }
                     if (mtn[k][t].constructor === Array) {
-//                        console.log( k + t + " isArray")
                         var nodeElems = []
-                        for (var j in mtn[k][t])
+
+                        var leafNames = mtn[k][t].slice()
+                        leafNames.sort()
+
+                        for (var j in leafNames)
                             nodeElems.push({ text : mapTypes[mtn[k][t][j]]["displayName"]
+                                               ,root: false
                                                ,key : mtn[k][t][j]
-                                               ,overlay: mapTypes[mtn[k][t][j]]["overlay"]  })
+                                               ,overlay: mapTypes[mtn[k][t][j]]["overlay"]
+                                               ,pluginName: k})
                         leNode["elements"] = nodeElems
                     } else {
                         leNode["key"] = mtn[k][t]
                         leNode["overlay"] = mapTypes[mtn[k][t]]["overlay"]
+                        leNode["pluginName"] = k
                     }
 
                     elems.push(leNode)
@@ -146,22 +148,6 @@ Rectangle {
 
     ListModel {
         id: availableLayersModel
-//        ListElement {
-//            text: "Level 1, Node 1" }
-//        ListElement {
-//            text: "Level 1, Node 2"
-//            elements: [
-//                ListElement { text: "Level 2, Node 1"
-//                    elements: [
-//                        ListElement {
-//                            text: "Level 3, Node 1" }
-//                    ]
-//                },
-//                ListElement {
-//                    text: "Level 2, Node 2" }
-//            ]
-//        }
-//        ListElement { text: "Level 1, Node 3" }
     }
 
     Rectangle {
@@ -236,7 +222,13 @@ Rectangle {
                                         Column {
 
                                             Rectangle {
-                                                color: !!model.elements ? loader.expanded ? Qt.rgba(.8, .7, .8, 1) : Qt.rgba(.6, .4, .6, 1) : Qt.rgba(.8, 1,1,1)
+                                                color: model.root ?
+                                                    Qt.rgba(178/255, 34/255, 34/255, 1)
+                                                    : !!model.elements ?
+                                                        loader.expanded ?
+                                                            Qt.rgba(.8, .7, .8, 1)
+                                                            : Qt.rgba(.6, .4, .6, 1)
+                                                        : Qt.rgba(.8, 1,1,1)
                                                 //border.color: "red"
                                                 height: txt.height * 2
                                                 width: treeView.width //txt.width
@@ -245,6 +237,7 @@ Rectangle {
                                                 property var text: model.text
                                                 property var overlay: model.overlay
                                                 property var map: model.mapObject
+                                                property var pluginName: model.pluginName
 
                                                 Drag.active: ma.drag.active
                                                 Drag.dragType: (!model.elements) ? Drag.Automatic : Drag.None
@@ -304,6 +297,7 @@ Rectangle {
         id: mapComponent
 
         Map {
+            id: map
             anchors.fill: parent
             color: 'transparent'
             center : parent.center
@@ -312,7 +306,9 @@ Rectangle {
             tilt: parent.tilt
             bearing: parent.bearing
             fieldOfView: parent.fieldOfView
+            visible: (checked && (zoomLevel >= minimumZoomLevel))
             z: parent.z + 1
+            property bool checked: true
         }
     }
 
@@ -350,11 +346,13 @@ Rectangle {
             var key = "osm.Street Map"
             var text = "Street Map"
             var overlay = false
+            var pluginName = "osm"
 
             if (dragSource !== undefined) {
                 key = dragSource.key
                 text = dragSource.text
                 overlay = dragSource.overlay
+                pluginName = dragSource.pluginName
             }
 
             var mapTypes = pluginManager.getMapTypes()
@@ -370,7 +368,8 @@ Rectangle {
             enabledLayersModel.append({ text: text
                                        ,key: key
                                        ,overlay: overlay
-                                       ,mapObject: map })
+                                       ,mapObject: map
+                                       ,pluginName: pluginName})
         }
 
         DropArea {
@@ -405,6 +404,15 @@ Rectangle {
                             height: textLabel.height * 2
                             width: listViewEnabled.width
                             color: "white"
+
+                            Text {
+                                id: pluginLabel
+                                color: "crimson"
+                                anchors.left: parent.left
+                                anchors.top: parent.top
+                                font.pixelSize: textLabel.font.pixelSize / 1.3
+                                text: model.pluginName
+                            }
 
                             Text {
                                 id: textLabel
@@ -448,7 +456,7 @@ Rectangle {
                                     //activeFocusOnPress: true
 
                                     onCheckedChanged: {
-                                        enabledLayersModel.get(index).mapObject.visible = checked
+                                        enabledLayersModel.get(index).mapObject.checked = checked
                                     }
                                 }
 //                            }

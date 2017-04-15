@@ -49,8 +49,8 @@ import LocationComponents 1.0
 Window {
     id: win
     visible: true
-    width: 640
-    height: 640
+    width: 960
+    height: 960
     property var copyVisible : true
 
 //    GeoservicePlugins {
@@ -91,7 +91,9 @@ Window {
                 id: zlAnim;
                 target: mapItems;
                 property: "zoomLevel";
-                duration: mapItems.transitionDuration
+                duration: mapItems.transitionDuration * 2
+                easing.type: Easing.Bezier
+                easing.bezierCurve: [0.47,1.03,0.36,0.944,1,1]
             }
 
             CoordinateAnimation {
@@ -121,8 +123,6 @@ Window {
         }
     }
 
-
-
     MapCrosshair {
         width: 20
         height: 20
@@ -136,5 +136,13 @@ Window {
         mapSource: mapItems
         mapContainer: mapContainer
         //pluginParametersJsonURL: someUrl  // define this if QTLOCATION_PLUGIN_PARAMETERS_URL isn't present
+        pluginParametersJsonURL: "qrc:/pluginParameters.json"
+    }
+
+    MapSliders {
+        id: sliders2
+        z: mapItems.z + 1
+        mapSource: mapItems
+        edge: Qt.RightEdge
     }
 }
