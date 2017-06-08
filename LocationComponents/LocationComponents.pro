@@ -35,7 +35,12 @@ OTHER_FILES +=  LocationComponents.pri \
                 LayerManager.qml \
                 PanelToggler.qml \
                 DraggableItem.qml \
+                LongPoly.qml \
                 LocationComponents.qrc
+
+DISTFILES += \
+    MapMarker.qml \
+    FpsMeter.qml
 
 
 

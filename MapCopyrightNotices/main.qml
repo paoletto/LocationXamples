@@ -109,16 +109,16 @@ Window {
         copyrightsVisible: win.copyVisible
     }
 
-    MapCrosshair {
-        width: 20
-        height: 20
-        anchors.centerIn: parent
-        z: map.z + 1
-    }
+//    MapCrosshair {
+//        width: 20
+//        height: 20
+//        anchors.centerIn: parent
+//        z: map.z + 1
+//    }
 
-    MapSliders {
-        id: sliders
-        z: map.z + 1
-        map: map
-    }
+//    MapSliders {
+//        id: sliders
+//        z: map.z + 1
+//        mapSource: map
+//    }
 }

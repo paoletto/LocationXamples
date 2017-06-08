@@ -56,15 +56,16 @@ Window {
         id: plugins
     }
 
-    MapWithSliders {
+    Map {
         id: map
         gesture.enabled: true
         objectName: "mapComponent"
         anchors.fill: parent
+
         opacity: 1.0
         color: 'transparent'
         plugin: plugins.osm
-        center: QtPositioning.coordinate(45,10)
+        center: QtPositioning.coordinate(19,49)
         activeMapType: map.supportedMapTypes[2]
         zoomLevel: 4
         z : parent.z + 1
@@ -72,6 +73,20 @@ Window {
 
         MapPolygonSelfIntersecting {
             id: selfIntersectingPolygon
+        }
+
+        MapCrosshair {
+            width: 20
+            height: 20
+            anchors.centerIn: parent
+            z: parent.z + 1
+        }
+
+        MapSliders {
+            id: sliders
+            z: parent.z + 1
+            mapSource: map
+            edge: Qt.RightEdge
         }
     }
 }

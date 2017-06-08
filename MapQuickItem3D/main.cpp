@@ -82,11 +82,11 @@ int main(int argc, char *argv[])
     QSurfaceFormat fmt;
     fmt.setDepthBufferSize(24);
 
-    if (OGLSupports(3,3,false,QSurfaceFormat::CompatibilityProfile)) {
+    if (OGLSupports(3,3,false,QSurfaceFormat::CoreProfile)) {
         qDebug("Requesting 3.3 core context");
         fmt.setVersion(3, 3);
         fmt.setRenderableType(QSurfaceFormat::OpenGL);
-        fmt.setProfile(QSurfaceFormat::CompatibilityProfile);
+        fmt.setProfile(QSurfaceFormat::CoreProfile);
     }
     else {
         qWarning("Error: OpenGL support is too old. Exiting.");
@@ -96,8 +96,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
     registerLocationComponents(engine);
-    qmlRegisterType<QmlCube>("LocationComponents", 1, 0, \
-            "Cube");
+    qmlRegisterType<QmlCube>("FooBar", 1, 0, "Cube");
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     return app.exec();

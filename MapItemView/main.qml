@@ -64,5 +64,28 @@ Window {
         center: QtPositioning.coordinate(45,10)
         activeMapType: map.supportedMapTypes[0]
         zoomLevel: 4
+
+        MapItemView {
+            id: viewA
+            model: listModelA
+            delegate: Component {
+                id: delegate
+
+                MapQuickItemQt {
+                    id: ite
+                    coordinate {
+                        latitude: lat;
+                        longitude: lon;
+                    }
+                }
+            }
+        }
+    }
+
+
+    ListModel {
+        id: listModelA
+        ListElement{lat: 10; lon: 20;}
+        ListElement{lat: 30; lon: 40;}
     }
 }

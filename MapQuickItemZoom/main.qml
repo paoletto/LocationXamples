@@ -89,6 +89,8 @@ Window {
             id: markerTest
             z: 10
 
+            zoomLevel: 2.0
+
             coordinate { latitude: 42.350000000; longitude: -71.0}
 
             sourceItem: Rectangle {

@@ -10,9 +10,11 @@ MapCircleSouthPole \
 MapCopyrightNotices \
 MapEnabled \
 MapGestureArea \
+MapInFrame \
 MapItemGroup \
 MapItemsLayer \
 MapItemView \
+MapItemsPerformance \
 MapLayers \
 MapLayersDynamic \
 MapLayersSwipeView \
@@ -29,10 +31,15 @@ MapPluginOpenaccess \
 MapPluginOsmHiDpi \
 MapPluginOsmOffline \
 MapPolygonSelfIntersections \
+MapPolygon \
+MapPolygons \
 MapPolyline \
+MapRoute \
 MapRectangle \
+MapSetBearing \
 MapQuickItem3D \
 MapDoubleClick \
+MapQuickItemPerf \
 MapQuickItemVideo \
 MapQuickItemZoom \
 MapTileOverlay \

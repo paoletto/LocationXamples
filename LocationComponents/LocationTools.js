@@ -38,7 +38,29 @@
 **
 ****************************************************************************/
 
-function addMeridians(map, color, thickness) {
+function addMapMarkers(map, latitudeDelta, longitudeDelta)
+{
+    var cnt = 0
+    for (var longi=-180; longi<180; longi = longi + longitudeDelta) {
+        for (var lati=-90; lati<=90; lati = lati + longitudeDelta) {
+            var marker = Qt.createQmlObject ("import QtQuick 2.5;"
+                                          +"import QtLocation 5.6;"
+                                          +"MapMarker {"
+                                          +" w: 16; h: 16;"
+                                          +" coordinate {"
+                                          +"  latitude: "+ lati +";"
+                                          +"  longitude: "+ longi +";"
+                                          +" }"
+                                          +"}", map)
+            map.addMapItem(marker)
+            cnt += 1
+        }
+    }
+    console.log("Added " + cnt + " markers")
+}
+
+function addMeridians(map, color, thickness)
+{
     var longi = -180.0
     for (var i=0; i<36; i++) {
         var meridianColor = color
@@ -58,7 +80,8 @@ function addMeridians(map, color, thickness) {
     }
 }
 
-function addParallels(map, color, thickness) {
+function addParallels(map, color, thickness)
+{
     var lati = -80.0
     for (var i=0; i<16; i++) {
         var parallelColor = color

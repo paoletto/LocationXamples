@@ -8,6 +8,7 @@ MapPolylineUSA                      1.0 MapPolylineUSA.qml
 MapPolygonSelfIntersecting          1.0 MapPolygonSelfIntersecting.qml
 MapItemGroupFlower                  1.0 MapItemGroupFlower.qml
 MapCrosshair                        1.0 MapCrosshair.qml
+MapMarker                           1.0 MapMarker.qml
 MapCircleWithBoundingBox            1.0 MapCircleWithBoundingBox.qml
 MapCircleSouthPole                  1.0 MapCircleSouthPole.qml
 MapCircleNorthPole                  1.0 MapCircleNorthPole.qml
@@ -18,3 +19,5 @@ LayerManager                        1.0 LayerManager.qml
 LocationMenuBar                     1.0 LocationMenuBar.qml
 PanelToggler                        1.0 PanelToggler.qml
 Draggableitem                       1.0 DraggableItem.qml
+FpsMeter                            1.0 FpsMeter.qml
+LongPoly                            1.0 LongPoly.qml

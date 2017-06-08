@@ -43,6 +43,7 @@
 #include <QtGui/qopenglshaderprogram.h>
 #include <QtGui/qopenglcontext.h>
 #include <QtGui/qopenglextrafunctions.h>
+#include <QtGui/QOpenGLVertexArrayObject>
 #include <QDebug>
 
 class QmlCubeRenderNode : public QSGRenderNode
@@ -59,11 +60,12 @@ public:
 
 private:
     QmlCube *m_cube;
+    QOpenGLVertexArrayObject *m_vao;
     QOpenGLShaderProgram *m_shader;
     QOpenGLShaderProgram *m_shaderBlending;
 };
 
-QmlCubeRenderNode::QmlCubeRenderNode(QmlCube *cube): m_cube(cube), m_shader(0)
+QmlCubeRenderNode::QmlCubeRenderNode(QmlCube *cube): m_cube(cube), m_shader(0), m_vao(0)
 {
 
 }
@@ -88,6 +90,11 @@ void QmlCubeRenderNode::render(const QSGRenderNode::RenderState *state)
     QMatrix4x4 transformation = *state->projectionMatrix() * *matrix() * matScale;
 
     // Do the GL rendering
+
+    if (!m_vao) {
+        m_vao = new QOpenGLVertexArrayObject;
+        m_vao->create();
+    }
 
     if (!m_shader) {
         // Create shaders
@@ -183,7 +190,9 @@ void QmlCubeRenderNode::render(const QSGRenderNode::RenderState *state)
 
     m_shaderBlending->bind();
     m_shaderBlending->setUniformValue("projection", transformation);
+    m_vao->bind();
     f->glDrawArrays(GL_TRIANGLES, 0, 36);
+    m_vao->release();
     m_shaderBlending->release();
     f->glDisable(GL_DEPTH_TEST);
     f->glDisable(GL_BLEND);
@@ -199,6 +208,10 @@ void QmlCubeRenderNode::releaseResources()
     if (m_shaderBlending)
         delete m_shaderBlending;
     m_shaderBlending = 0;
+
+    if (m_vao)
+        delete m_vao;
+    m_vao = 0;
 }
 
 QSGRenderNode::StateFlags QmlCubeRenderNode::changedStates() const

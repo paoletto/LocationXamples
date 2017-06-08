@@ -51,6 +51,10 @@ Window {
     width: 960
     height: 960
 
+    FpsMeter {
+        z: map.z + 1
+    }
+
     GeoservicePlugins {
         id: plugins
     }
@@ -67,6 +71,11 @@ Window {
 
         MapCircleBothPoles {
             opacity: 0.5
+        }
+
+        MapCircleSouthPole {
+            opacity: 0.7
+            color: "deepskyblue"
         }
     }
 }

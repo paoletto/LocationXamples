@@ -5,5 +5,7 @@
         <file>icon_expander.png</file>
         <file>icon_maplayer128.png</file>
         <file>icon_maplayer64.png</file>
+        <file>icon_marker_tall.png</file>
+        <file>icon_marker_short.png</file>
     </qresource>
 </RCC>

@@ -39,9 +39,9 @@
 ****************************************************************************/
 
 import QtQuick 2.6
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
-import QtQuick.Controls 2.1 as C2
+//import QtQuick.Controls 1.4
+//import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.2 as C2
 
 Row {
     id: containerRow
@@ -62,7 +62,7 @@ Row {
     anchors.left: rightEdge() ? undefined : parent.left
 
     property alias checked: sliderToggler.checked
-    visible: checked
+    //visible: checked
 
     PanelToggler {
         id: sliderToggler
@@ -103,7 +103,7 @@ Row {
                     height: parent.height
                     width: parent.entryWidth
                     border.color: sliderContainer.labelBorderColor
-                    Label {
+                    C2.Label {
                         id: labelZoomValue
                         text: zoomSlider.value.toFixed(3)
                         font.pixelSize: fontSize
@@ -116,7 +116,7 @@ Row {
                     height: parent.height
                     width: parent.entryWidth
                     border.color: sliderContainer.labelBorderColor
-                    Label {
+                    C2.Label {
                         id: labelBearingValue
                         text: bearingSlider.value.toFixed(2)
                         font.pixelSize: fontSize
@@ -129,7 +129,7 @@ Row {
                     height: parent.height
                     width: parent.entryWidth
                     border.color: sliderContainer.labelBorderColor
-                    Label {
+                    C2.Label {
                         id: labelTiltValue
                         text: tiltSlider.value.toFixed(2)
                         font.pixelSize: fontSize
@@ -142,7 +142,7 @@ Row {
                     height: parent.height
                     width: parent.entryWidth
                     border.color: sliderContainer.labelBorderColor
-                    Label {
+                    C2.Label {
                         id: labelFovValue
                         text: fovSlider.value.toFixed(2)
                         font.pixelSize: fontSize
@@ -217,7 +217,7 @@ Row {
                     height: parent.entryHeight
                     width: parent.entryWidth
                     border.color: sliderContainer.labelBorderColor
-                    Label {
+                    C2.Label {
                         id: labelZoom
                         text: "Zoom"
                         font.pixelSize: fontSize
@@ -231,7 +231,7 @@ Row {
                     height: parent.entryHeight
                     width: parent.entryWidth
                     border.color: sliderContainer.labelBorderColor
-                    Label {
+                    C2.Label {
                         id: labelBearing
                         text: "Bearing"
                         font.pixelSize: fontSize
@@ -244,7 +244,7 @@ Row {
                     height: parent.entryHeight
                     width: parent.entryWidth
                     border.color: sliderContainer.labelBorderColor
-                    Label {
+                    C2.Label {
                         id: labelTilt
                         text: "Tilt"
                         font.pixelSize: fontSize
@@ -257,7 +257,7 @@ Row {
                     height: parent.entryHeight
                     width: parent.entryWidth
                     border.color: sliderContainer.labelBorderColor
-                    Label {
+                    C2.Label {
                         id: labelFov
                         text: "FoV"
                         font.pixelSize: fontSize

@@ -360,8 +360,8 @@ Rectangle {
 
 
             var map = mapComponent.createObject(mapContainer);
-            map.plugin = mapType["plugin"]
             map.activeMapType = mapType["mapType"]
+            map.plugin = mapType["plugin"]
             map.z = map.z + enabledLayersModel.count
 
             //container.maps.push(map)
