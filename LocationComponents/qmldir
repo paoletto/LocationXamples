@@ -5,6 +5,7 @@ GeoservicePlugins                   1.0 GeoservicePlugins.qml
 MapSliders                          1.0 MapSliders.qml
 MapQuickItemQt                      1.0 MapQuickItemQt.qml
 MapPolylineUSA                      1.0 MapPolylineUSA.qml
+MapPolylineReal                     1.0 MapPolylineReal.qml
 MapPolygonSelfIntersecting          1.0 MapPolygonSelfIntersecting.qml
 MapItemGroupFlower                  1.0 MapItemGroupFlower.qml
 MapCrosshair                        1.0 MapCrosshair.qml

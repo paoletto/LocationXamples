@@ -38,37 +38,18 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.7
-import QtQuick.Window 2.2
-import QtQuick.Controls 1.4
-import QtPositioning 5.6
-import QtLocation 5.9
-import LocationComponents 1.0
+#include "locationcomponents.h"
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
 
-Window {
-    id: win
-    visible: true
-    width: 640
-    height: 640
-    property var copyVisible : false
+int main(int argc, char *argv[])
+{
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication app(argc, argv);
 
-    GeoservicePlugins {
-        id: plugins
-    }
+    QQmlApplicationEngine engine;
+    registerLocationComponents(engine);
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
-    MapWithSliders {
-        id: map
-        anchors.fill: parent
-        opacity: 1.0
-        color: 'transparent'
-        plugin: plugins.osm
-        center: QtPositioning.coordinate(45,10)
-        activeMapType: map.supportedMapTypes[0]
-        zoomLevel: 4
-        copyrightsVisible: win.copyVisible
-
-        //MapPolylineUSA {
-        MapPolylineReal {
-        }
-    }
+    return app.exec();
 }

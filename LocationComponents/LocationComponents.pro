@@ -40,7 +40,8 @@ OTHER_FILES +=  LocationComponents.pri \
 
 DISTFILES += \
     MapMarker.qml \
-    FpsMeter.qml
+    FpsMeter.qml \
+    MapPolylineReal.qml
 
 
 

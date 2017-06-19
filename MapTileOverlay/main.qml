@@ -61,7 +61,7 @@ Window {
         opacity: 1.0
         anchors.fill: parent
         plugin: plugins.mapbox
-        activeMapType: mapBase.supportedMapTypes[4]
+        activeMapType: mapBase.supportedMapTypes[5] // 4 = satellite
         gesture.enabled: false
         center: map.center
         zoomLevel: map.zoomLevel

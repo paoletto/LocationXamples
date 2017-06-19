@@ -53,6 +53,8 @@ Window {
             activeMapType: map.supportedMapTypes[4]
             center: QtPositioning.coordinate(37.562984, -122.514426)
 
+            tilt: 0
+
                 MapCrosshair {
                     width: 20
                     height: 20

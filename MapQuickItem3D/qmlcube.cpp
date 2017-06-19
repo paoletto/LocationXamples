@@ -179,7 +179,9 @@ void QmlCubeRenderNode::render(const QSGRenderNode::RenderState *state)
 
     m_shader->bind();
     m_shader->setUniformValue("projection", transformation);
+    m_vao->bind();
     f->glDrawArrays(GL_TRIANGLES, 0, 36);
+    m_vao->release();
     m_shader->release();
 
     f->glDepthFunc(GL_LEQUAL);

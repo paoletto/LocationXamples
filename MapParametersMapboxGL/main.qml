@@ -51,37 +51,37 @@ Window {
     width: 640
     height: 640
 
+
+
     GeoservicePlugins {
         id: plugins
-    }
 
-    MapWithSliders {
+        Component.onCompleted: {
+            var code = '
+        import QtQuick 2.7
+        import QtQuick.Window 2.2
+        import QtQuick.Controls 1.4
+        import QtPositioning 5.6
+        import QtLocation 5.9
+        import LocationComponents 1.0
+
+
+        MapWithSliders {
         id: map
         anchors.fill: parent
         opacity: 1.0
-        color: 'transparent'
+        color: "transparent"
         plugin: plugins.mapboxgl
         center: QtPositioning.coordinate(45,10)
         activeMapType: map.supportedMapTypes[0]
         zoomLevel: 4
-
-//        MapParameter {
-//            type: 'source'
-
-//            property var name: "routeSource"
-//            property var sourceType: "geojson"
-//            property var data: "{ 'type': 'FeatureCollection', 'features':
-//                [{ 'type': 'Feature', 'properties': {}, 'geometry': {
-//                'type': 'LineString', 'coordinates': [[ 24.934938848018646,
-//                60.16830257086771 ], [ 24.943315386772156, 60.16227776476442 ]]}}]}"
-//        }
 
         MapParameter {
             type: "source"
 
             property var name: "routeSource"
             property var sourceType: "geojson"
-            property var data: '{ "type": "FeatureCollection", "features": [{ "type": "Feature", "properties": {}, "geometry": { "type": "LineString", "coordinates": [[ 24.934938848018646, 60.16830257086771 ], [ 44.943315386772156, 40.16227776476442 ]]}}]}'
+            property var data: \'{ "type": "FeatureCollection", "features": [{ "type": "Feature", "properties": {}, "geometry": { "type": "LineString", "coordinates": [[ 24.934938848018646, 60.16830257086771 ], [ 44.943315386772156, 40.16227776476442 ]]}}]}\'
         }
 
 
@@ -112,5 +112,60 @@ Window {
             property var lineJoin: "round"
             property var lineCap: "round"
         }
+    }'
+
+
+            Qt.createQmlObject(code, win)
+        }
     }
+
+
+
+//    MapWithSliders {
+//        id: map
+//        anchors.fill: parent
+//        opacity: 1.0
+//        color: 'transparent'
+//        plugin: plugins.mapboxgl
+//        center: QtPositioning.coordinate(45,10)
+//        activeMapType: map.supportedMapTypes[0]
+//        zoomLevel: 4
+
+//        MapParameter {
+//            type: "source"
+
+//            property var name: "routeSource"
+//            property var sourceType: "geojson"
+//            property var data: '{ "type": "FeatureCollection", "features": [{ "type": "Feature", "properties": {}, "geometry": { "type": "LineString", "coordinates": [[ 24.934938848018646, 60.16830257086771 ], [ 44.943315386772156, 40.16227776476442 ]]}}]}'
+//        }
+
+
+//        MapParameter {
+//            type: "layer"
+
+//            property var name: "route"
+//            property var layerType: "line"
+//            property var source: "routeSource"
+
+//            // Draw under the first road label layer
+//            // of the mapbox-streets style.
+//            property var before: "road-label-small"
+//        }
+
+//        MapParameter {
+//            type: "paint"
+
+//            property var layer: "route"
+//            property var lineColor: "blue"
+//            property var lineWidth: 8.0
+//        }
+
+//        MapParameter {
+//            type: "layout"
+
+//            property var layer: "route"
+//            property var lineJoin: "round"
+//            property var lineCap: "round"
+//        }
+//    }
 }
