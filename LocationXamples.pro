@@ -38,7 +38,9 @@ MapPolyline \
 MapRoute \
 MapRectangle \
 MapSetBearing \
+MapText \
 MapQuickItem3D \
+MapQuickItemQt3D \
 MapDoubleClick \
 MapQuickItemPerf \
 MapQuickItemVideo \
