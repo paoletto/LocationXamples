@@ -67,13 +67,103 @@ Window {
         plugin: plugins.osm
         center: QtPositioning.coordinate(19,49)
         activeMapType: map.supportedMapTypes[2]
-        zoomLevel: 4
+        zoomLevel: 7
         z : parent.z + 1
         copyrightsVisible: win.copyVisible
 
-        MapPolygonSelfIntersecting {
-            id: selfIntersectingPolygon
+//        MapPolygonSelfIntersecting {
+//            id: selfIntersectingPolygon
+//            border.color: Qt.rgba(0,0,1,0.3)
+//            //border.width: 26
+//            border.width: 26
+
+
+////            layer.enabled: true
+////            layer.samples: 4
+//            visible: true
+//        }
+
+        MapCircle {
+            id: circle
+            //border.color: Qt.rgba(0,0,1,0.3)
+            border.color: 'deepskyblue'
+            border.width: 26
+            center: QtPositioning.coordinate(19, 49);
+            radius: 200*1000
+            color: "firebrick"
+
+            layer.enabled: true
+            layer.samples: 4
         }
+
+//        MapPolyline {
+//            id: selfIntersectingPolyline
+//            line.color: 'deepskyblue'
+//            line.width: 26
+//            opacity: 1.0
+//            path: [
+//                { latitude: 19, longitude: 49 },
+//                { latitude: 18, longitude: 49 },
+//                { latitude: 18, longitude: 51 },
+//                { latitude: 20, longitude: 51 },
+//                { latitude: 20, longitude: 50 },
+//                { latitude: 18.5, longitude: 50 },
+//                { latitude: 18.5, longitude: 52 },
+//                { latitude: 19, longitude: 52 }
+//            ]
+
+//            MouseArea{
+//                anchors.fill: parent
+//                drag.target: parent
+//            }
+
+//            layer.enabled: true
+//            layer.samples: 4
+//        }
+
+//        MapPolyline {
+//            id: selfIntersectingPolyline2
+//            line.color: 'firebrick'
+//            line.width: 4
+//            opacity: 1.0
+//            path: [
+//                { latitude: 19, longitude: 49 },
+//                { latitude: 18, longitude: 49 },
+//                { latitude: 18, longitude: 51 },
+//                { latitude: 20, longitude: 51 },
+//                { latitude: 20, longitude: 50 },
+//                { latitude: 18.5, longitude: 50 },
+//                { latitude: 18.5, longitude: 52 },
+//                { latitude: 19, longitude: 52 }
+//            ]
+
+//            MouseArea{
+//                anchors.fill: parent
+//                drag.target: parent
+//            }
+//        }
+
+//        MapPolyline {
+//            id: selfIntersectingPolyline3
+//            line.color: 'black'
+//            line.width: 1
+//            opacity: 1.0
+//            path: [
+//                { latitude: 19, longitude: 49 },
+//                { latitude: 18, longitude: 49 },
+//                { latitude: 18, longitude: 51 },
+//                { latitude: 20, longitude: 51 },
+//                { latitude: 20, longitude: 50 },
+//                { latitude: 18.5, longitude: 50 },
+//                { latitude: 18.5, longitude: 52 },
+//                { latitude: 19, longitude: 52 }
+//            ]
+
+//            MouseArea{
+//                anchors.fill: parent
+//                drag.target: parent
+//            }
+//        }
 
         MapCrosshair {
             width: 20

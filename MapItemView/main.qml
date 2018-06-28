@@ -62,7 +62,7 @@ Window {
         color: 'transparent'
         plugin: plugins.osm
         center: QtPositioning.coordinate(45,10)
-        activeMapType: map.supportedMapTypes[0]
+        activeMapType: map.supportedMapTypes[1]
         zoomLevel: 4
 
         MapItemView {

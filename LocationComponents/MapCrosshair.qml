@@ -43,7 +43,6 @@ import QtQuick 2.4
 Item {
     property var crossColor: "deepskyblue"
     property var thickness: 2
-
     width: 20
     height: 20
     anchors.centerIn: parent

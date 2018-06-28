@@ -67,9 +67,41 @@ Window {
         property var bearing: mapItems.bearing
         property var fieldOfView: mapItems.fieldOfView
 
+        Rectangle {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: 20
+            width: 200
+            height: 36
+            color: Qt.rgba(1,1,1,0.3)
+            border.color: "black"
+            z:10000
+            TextInput {
+                anchors.fill: parent
+                horizontalAlignment: TextInput.AlignHCenter
+                verticalAlignment: TextInput.AlignVCenter
+                text: "-8.183111, 124.370389"
+                onAccepted: {
+                    var arr = text.split(',')
+                    if (arr.length != 2)
+                        return
+                    var lat = parseFloat(arr[0])
+                    var lon = parseFloat(arr[1])
+                    if (isNaN(lat) || isNaN(lon))
+                        return
+                    centerAnim.from = mapItems.center
+                    centerAnim.to = QtPositioning.coordinate(lat, lon)
+                    centerAnim.start()
+                }
+            }
+        }
+
+
+
 
         Map {
             id: mapItems
+            objectName: "mapItems"
             anchors.fill: parent
             opacity: 1.0
             color: 'transparent'

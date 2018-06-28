@@ -62,13 +62,28 @@ Window {
         opacity: 1.0
         color: 'transparent'
         plugin: plugins.osm
+        //plugin: Plugin {             name: "tilting";     }
+
         center: QtPositioning.coordinate(45,10)
         activeMapType: map.supportedMapTypes[0]
         zoomLevel: 4
         copyrightsVisible: win.copyVisible
 
-        //MapPolylineUSA {
-        MapPolylineReal {
+        MapPolylineUSA {
+        //MapPolylineReal {
+        //LongPoly {
+            opacity: 0.3
+            line.width: 16
+            layer.enabled: true
+        }
+
+        MapPolyline {
+            line.width: 3
+            line.color: 'firebrick'
+            path: [
+                { latitude: 0, longitude: -89.0 },
+                { latitude: 0, longitude: 89.0 }
+            ]
         }
     }
 }

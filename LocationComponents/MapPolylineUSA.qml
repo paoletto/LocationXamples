@@ -53,8 +53,28 @@ MapPolyline {
 
     MouseArea{
         anchors.fill: parent
-        drag.target: parent
+        //drag.target: parent
         preventStealing: true
+        hoverEnabled: true
+
+        onClicked: {
+            console.log("clicked")
+        }
+        onPressed: {
+            console.log("pressed")
+        }
+        onReleased: {
+            console.log("released")
+        }
+        onEntered: {
+            console.log("entered")
+        }
+        onExited: {
+            console.log("exited")
+        }
+        onHoveredChanged: {
+            console.log("hovered")
+        }
     }
 }
 

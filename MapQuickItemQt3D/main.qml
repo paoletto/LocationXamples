@@ -70,11 +70,12 @@ ApplicationWindow {
         opacity: 1.0
         color: 'transparent'
         plugin: plugins.osm
-        center: QtPositioning.coordinate(18.859820495687384, 50.164062499994515)
+        center: QtPositioning.coordinate(42.350000000, -71.0)
         //activeMapType: map.supportedMapTypes[0]
         zoomLevel: 4.0
         copyrightsVisible: win.copyVisible
         fieldOfView: 45
+        tilt: 55
 
         MapQuickItem {
             id: markerTest
@@ -82,7 +83,7 @@ ApplicationWindow {
 
             zoomLevel: 4.0
 
-            coordinate { latitude: 42.350000000; longitude: -71.0}
+            coordinate : QtPositioning.coordinate(42.350000000, -71.0)
 
             sourceItem: Rectangle {
                 id: rectangleContainer

@@ -119,17 +119,21 @@ Rectangle {
                         var leafNames = mtn[k][t].slice()
                         leafNames.sort()
 
-                        for (var j in leafNames)
-                            nodeElems.push({ text : mapTypes[mtn[k][t][j]]["displayName"]
-                                               ,root: false
-                                               ,key : mtn[k][t][j]
-                                               ,overlay: mapTypes[mtn[k][t][j]]["overlay"]
-                                               ,pluginName: k})
+                        for (var j in leafNames) {
+                            var dataEntry = { text : mapTypes[mtn[k][t][j]]["displayName"]
+                                ,root: false
+                                ,key : mtn[k][t][j]
+                                ,idxx: mapTypes[mtn[k][t][j]]["mapTypeIndex"]
+                                ,overlay: mapTypes[mtn[k][t][j]]["overlay"]
+                                ,pluginName: k}
+                            nodeElems.push(dataEntry)
+                        }
                         leNode["elements"] = nodeElems
                     } else {
                         leNode["key"] = mtn[k][t]
                         leNode["overlay"] = mapTypes[mtn[k][t]]["overlay"]
                         leNode["pluginName"] = k
+                        leNode["idxx"] = mapTypes[mtn[k][t]]["mapTypeIndex"]
                     }
 
                     elems.push(leNode)
@@ -235,6 +239,7 @@ Rectangle {
 
                                                 property var key : model.key
                                                 property var text: model.text
+                                                property var idxx: model.idxx
                                                 property var overlay: model.overlay
                                                 property var map: model.mapObject
                                                 property var pluginName: model.pluginName
@@ -347,12 +352,14 @@ Rectangle {
             var text = "Street Map"
             var overlay = false
             var pluginName = "osm"
+            var idxx = "0"
 
             if (dragSource !== undefined) {
                 key = dragSource.key
                 text = dragSource.text
                 overlay = dragSource.overlay
                 pluginName = dragSource.pluginName
+                idxx = dragSource.idxx
             }
 
             var mapTypes = pluginManager.getMapTypes()
@@ -367,6 +374,7 @@ Rectangle {
             //container.maps.push(map)
             enabledLayersModel.append({ text: text
                                        ,key: key
+                                       ,idxx: idxx
                                        ,overlay: overlay
                                        ,mapObject: map
                                        ,pluginName: pluginName})
@@ -411,7 +419,7 @@ Rectangle {
                                 anchors.left: parent.left
                                 anchors.top: parent.top
                                 font.pixelSize: textLabel.font.pixelSize / 1.3
-                                text: model.pluginName
+                                text: model.pluginName + " - " + model.idxx
                             }
 
                             Text {

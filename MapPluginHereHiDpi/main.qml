@@ -51,8 +51,26 @@ Window {
     width: 640
     height: 640
 
-    GeoservicePlugins {
-        id: plugins
+//    GeoservicePlugins {
+//        id: plugins
+//    }
+
+    Plugin {
+        id: herePluginTest
+        name: 'here';
+
+        PluginParameter {
+            name: "here.mapping.highdpi_tiles" ;
+            value: true;
+        }
+        PluginParameter {
+            name: "here.app_id"
+            value: SystemEnvironment.variable("HERE_APP_ID") //hereAppId
+        }
+        PluginParameter {
+            name: "here.token"
+            value: SystemEnvironment.variable("HERE_TOKEN") //hereToken
+        }
     }
 
     MapWithSliders {
@@ -60,7 +78,7 @@ Window {
         anchors.fill: parent
         opacity: 1.0
         color: 'transparent'
-        plugin: plugins.hereHiDpi
+        plugin: herePluginTest  //plugins.herePluginTest //plugins.hereHiDpi
         center: QtPositioning.coordinate(45,10)
         activeMapType: map.supportedMapTypes[0]
         zoomLevel: 4

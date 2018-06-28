@@ -66,7 +66,7 @@ public:
         setTileSize(QSize(256, 256));
 
         QList<QGeoMapType> mapTypes;
-        mapTypes << QGeoMapType(QGeoMapType::CustomMap, QStringLiteral("TileSpec"), QStringLiteral("TileSpec"), false, false, 1, "tileoverlay");
+        mapTypes << QGeoMapType(QGeoMapType::CustomMap, QStringLiteral("TileSpec"), QStringLiteral("TileSpec"), false, false, 1, "tileoverlay", capabilities);
         setSupportedMapTypes(mapTypes);
 
         QGeoTileFetcherTest *fetcher = new QGeoTileFetcherTest(this);

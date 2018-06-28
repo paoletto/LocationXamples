@@ -22,3 +22,4 @@ PanelToggler                        1.0 PanelToggler.qml
 Draggableitem                       1.0 DraggableItem.qml
 FpsMeter                            1.0 FpsMeter.qml
 LongPoly                            1.0 LongPoly.qml
+MediumPoly                          1.0 MediumPoly.qml

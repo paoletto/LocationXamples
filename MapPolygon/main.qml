@@ -57,6 +57,11 @@ Window {
         id: plugins
     }
 
+    function printSize(e)
+    {
+        console.log(e.objectName, e.x, e.y, e.width, e.height)
+    }
+
     Map {
         id: map
         gesture.enabled: true
@@ -73,7 +78,7 @@ Window {
         plugin: plugins.osm
         center: QtPositioning.coordinate(45,10)
         activeMapType: map.supportedMapTypes[2]
-        zoomLevel: 2
+        zoomLevel: 2.5
         z : parent.z + 1
         copyrightsVisible: win.copyVisible
 
@@ -94,7 +99,7 @@ Window {
         property matrix4x4 proj: Qt.matrix4x4()
         function updateProj() {
             map.proj = map.projectionTransformation()
-            console.log(map.proj)
+            //console.log(map.proj)
         }
 
         onZoomLevelChanged: updateProj()
@@ -104,6 +109,38 @@ Window {
         onTiltChanged: updateProj()
         onBearingChanged: updateProj()
         onFieldOfViewChanged: updateProj()
+
+        onMapReadyChanged: {
+            updateProj()
+            printSize(poly)
+        }
+
+
+
+        Rectangle {
+            x: 0.333333
+            y: 0.359725
+            width: 0.333333
+            height: 0.28055
+
+            id: rect
+            objectName: "rect"
+            color: "green"
+
+            transform: Matrix4x4 {
+                matrix: map.proj
+            }
+
+            onXChanged: printSize(rect)
+            onWidthChanged: printSize(rect)
+
+//            MouseArea{
+//                id:maRect
+//                objectName: "maRect"
+//                anchors.fill: parent
+//                drag.target: parent
+//            }
+        }
 
         MapPolygon {
             id: poly
@@ -120,18 +157,14 @@ Window {
                 { latitude: -45, longitude: -60 }
             ]
 
-            Drag.onDragStarted: {
-                console.log("drag started")
-            }
 
             onXChanged: {
-                console.log("POLY SIZE"+poly.x + "," + poly.y + " " + poly.width+"x"+poly.height)
+                printSize(poly)
 
             }
 
             onWidthChanged: {
-                console.log("POLY SIZE"+poly.x + "," + poly.y + " " + poly.width+"x"+poly.height)
-
+                printSize(poly)
             }
 
             MouseArea{
@@ -146,29 +179,24 @@ Window {
                 preventStealing: true
 
                 onClicked: {
-                    console.log("CLICKED")
+                    console.log("MA CLICKED")
                 }
 
                 onPressed: {
-                    console.log("CLICKED")
+                    console.log("MA CLICKED")
                 }
                 onDoubleClicked: {
-                    console.log("CLICKED")
+                    console.log("MA CLICKED")
                 }
 
                 onHeightChanged: {
-                    console.log("MA SIZE "+ma.x + "," + ma.y + " " + ma.width+"x"+ma.height)
+                    printSize(ma)
                 }
 
                 onXChanged: {
-                    console.log("MA SIZE X "+ma.x + "," + ma.y + " " + ma.width+"x"+ma.height)
+                    printSize(ma)
                 }
             }
-        }
-
-        onMapReadyChanged: {
-            console.log("polySize: " + poly.width + " " + poly.height);
-            console.log("polyPos: " + poly.x + " " + poly.y);
         }
     }
 }

@@ -63,9 +63,11 @@ Row {
 
     property alias checked: sliderToggler.checked
     //visible: checked
+    property bool hideTogglerOnClose: false
 
     PanelToggler {
         id: sliderToggler
+        visible: hideTogglerOnClose ? sliderToggler.checked : true
     }
 
     Rectangle {

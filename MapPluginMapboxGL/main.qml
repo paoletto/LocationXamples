@@ -50,6 +50,7 @@ Window {
     visible: true
     width: 640
     height: 640
+    color: 'red'
 
     GeoservicePlugins {
         id: plugins
@@ -58,9 +59,13 @@ Window {
     MapWithSliders {
         id: map
         anchors.fill: parent
-        opacity: 1.0
+        opacity: 0.5
         color: 'transparent'
-        plugin: plugins.mapboxgl
+        //plugin: plugins.mapboxgl
+        plugin:Plugin {
+            name: "mapboxgl"
+             PluginParameter { name: "mapboxgl.mapping.use_fbo"; value: "true"}
+        }
         center: QtPositioning.coordinate(45,10)
         activeMapType: map.supportedMapTypes[0]
         zoomLevel: 4

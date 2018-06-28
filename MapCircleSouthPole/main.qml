@@ -60,7 +60,7 @@ Window {
         anchors.fill: parent
         opacity: 1.0
         color: 'transparent'
-        plugin: plugins.osm
+        plugin: plugins.mapboxgl
         center: QtPositioning.coordinate(45,10)
         activeMapType: map.supportedMapTypes[0]
         zoomLevel: 1

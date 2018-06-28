@@ -41,7 +41,8 @@ OTHER_FILES +=  LocationComponents.pri \
 DISTFILES += \
     MapMarker.qml \
     FpsMeter.qml \
-    MapPolylineReal.qml
+    MapPolylineReal.qml \
+    MediumPoly.qml
 
 
 

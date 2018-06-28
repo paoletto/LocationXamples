@@ -79,12 +79,35 @@ Window {
         anchors.fill: parent
         opacity: 0.5
         color: 'transparent'
-        plugin: plugins.osm
+        plugin: pluOverlay//plugins.osm
         center: QtPositioning.coordinate(45,10)
-        activeMapType: map.supportedMapTypes[0] //map.supportedMapTypes[map.supportedMapTypes.length - 1]
+        //center: QtPositioning.coordinate(4.5,-74)
+        //activeMapType: map.supportedMapTypes[0]
+        //activeMapType: map.supportedMapTypes[map.supportedMapTypes.length - 1]
+        activeMapType: map.supportedMapTypes[7]
         zoomLevel: 4
         z : mapBase.z + 1
         copyrightsVisible: win.copyVisible
+
+        onSupportedMapTypesChanged: {
+            console.log(map.supportedMapTypes.length)
+        }
+    }
+
+
+    Plugin {
+        id: pluOverlay
+        name: "osm"
+        PluginParameter {
+            name: "osm.mapping.custom.host"
+            //value :"file:///media/paolo/qdata/home/paolo/Qt/Location/3rdParty/MapSlicer/mapslicer/bogota/"
+            //value :"http://localhost:8080/"
+            value: "file:///tmp/qtiles/mytiles3/"
+        }
+        PluginParameter {
+            name: "osm.mapping.prefetching_style"
+            value :"NoPrefetching"
+        }
     }
 
     MapCrosshair {

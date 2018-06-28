@@ -73,5 +73,9 @@ Window {
         MapItemGroupFlower {
             id: itemGroup
         }
+
+        onMapReadyChanged : {
+            console.log(map.activeMapType.cameraCapabilities.minimumZoomLevel)
+        }
     }
 }

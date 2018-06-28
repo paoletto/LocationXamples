@@ -54,6 +54,7 @@ Item {
     property var mapbox: mapboxPlugin
     property var mapboxHiDpi: mapboxPluginHiDpi
     property var mapboxgl: mapboxglPlugin
+    property var herePluginTest: undefined
 
     property var pluginParameters : undefined
     // Assumes QTLOCATION_PLUGIN_PARAMETERS_URL points to a json file containing all the common params for the
@@ -109,6 +110,28 @@ Item {
 
         Component.onCompleted: {
             plugins.osmHiDpi = osmPluginHiDpi
+        }
+    }
+
+    Plugin {
+        id: herePluginTest_
+        name: 'here';
+
+        PluginParameter {
+            name: "here.mapping.highdpi_tiles" ;
+            value: true;
+        }
+        PluginParameter {
+            name: "here.app_id"
+            value: SystemEnvironment.variable("HERE_APP_ID") //hereAppId
+        }
+        PluginParameter {
+            name: "here.token"
+            value: SystemEnvironment.variable("HERE_TOKEN") //hereToken
+        }
+
+        Component.onCompleted: {
+            plugins.herePluginTest = herePluginTest_
         }
     }
 
@@ -185,14 +208,17 @@ Item {
         }
     }
 
-    Plugin {
-        id: to
-        name: "tileoverlay"
 
-        Component.onCompleted: {
-            plugins.tileOverlay = to
-        }
-    }
+//    Plugin {
+//        id: to
+//        name: "tileoverlay"
+
+//        Component.onCompleted: {
+//            plugins.tileOverlay = to
+//        }
+//    }
+
+
 
 // Somehow not working in here
 //    Plugin {

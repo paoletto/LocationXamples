@@ -112,6 +112,12 @@ Window {
             property var lineJoin: "round"
             property var lineCap: "round"
         }
+
+        MapParameter {
+            type: "layout"
+            property var layer: "country-label-lg"
+            property var textField: "name_de"
+        }
     }'
 
 

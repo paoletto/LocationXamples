@@ -38,8 +38,12 @@
 **
 ****************************************************************************/
 
-function addMapMarkers(map, latitudeDelta, longitudeDelta)
+function addMapMarkers(map, latitudeDelta, longitudeDelta, latVisible, lonVisible)
 {
+    if (latVisible === undefined)
+        latVisible = 90
+    if (lonVisible === undefined)
+        lonVisible = 180
     var cnt = 0
     for (var longi=-180; longi<180; longi = longi + longitudeDelta) {
         for (var lati=-90; lati<=90; lati = lati + longitudeDelta) {
@@ -51,6 +55,7 @@ function addMapMarkers(map, latitudeDelta, longitudeDelta)
                                           +"  latitude: "+ lati +";"
                                           +"  longitude: "+ longi +";"
                                           +" }"
+                                          +" visible: " + ((lati >latVisible || lati < -latVisible || longi > lonVisible || longi < -lonVisible) ? "false" : "true")
                                           +"}", map)
             map.addMapItem(marker)
             cnt += 1
@@ -64,12 +69,15 @@ function addMeridians(map, color, thickness)
     var longi = -180.0
     for (var i=0; i<36; i++) {
         var meridianColor = color
-        if (longi == -180.0)
+        var size = thickness
+        if (longi == -180.0) {
             meridianColor = "red"
+            size *= 2
+        }
         var line = Qt.createQmlObject ("import QtQuick 2.5;"
                                       +"import QtLocation 5.6;"
                                       +"MapPolyline {"
-                                      +"line.width: "+ thickness +";"
+                                      +"line.width: "+ size +";"
                                       +"line.color: '"+meridianColor+"'"
                                       +"}", map)
         line.addCoordinate(QtPositioning.coordinate(90,longi))
@@ -85,8 +93,11 @@ function addParallels(map, color, thickness)
     var lati = -80.0
     for (var i=0; i<16; i++) {
         var parallelColor = color
-        if (lati == 0.0)
+        var size = thickness
+        if (lati == 0.0) {
             parallelColor = "red"
+            size *= 2
+        }
 /* Single line, disappears very easily
         var line = Qt.createQmlObject ("import QtQuick 2.5;"
                                       +"import QtLocation 5.6;"
@@ -109,7 +120,7 @@ function addParallels(map, color, thickness)
             var line = Qt.createQmlObject ("import QtQuick 2.5;"
                                           +"import QtLocation 5.6;"
                                           +"MapPolyline {"
-                                          +"line.width: "+ thickness +";"
+                                          +"line.width: "+ size +";"
                                           +"line.color: '"+parallelColor+"'"
                                           +"}", map)
 

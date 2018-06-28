@@ -56,6 +56,10 @@ Window {
         id: plugins
     }
 
+    FpsMeter {
+        z: map.z + 1
+    }
+
     MapWithSliders {
         id: map
         anchors.fill: parent
@@ -70,7 +74,8 @@ Window {
 
 
         onMapReadyChanged: {
-            LocationTools.addMapMarkers(map, 2, 2)
+            //LocationTools.addMapMarkers(map, 2, 2)
+            LocationTools.addMapMarkers(map, 20, 20, 21, 21)
         }
     }
 }

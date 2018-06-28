@@ -49,6 +49,7 @@ Map {
     center: QtPositioning.coordinate(45,10)
     zoomLevel: 4
 
+
     MapCrosshair {
         width: 20
         height: 20

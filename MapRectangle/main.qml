@@ -56,23 +56,131 @@ Window {
         id: plugins
     }
 
-    MapWithSliders {
+    Map {
         id: map
-        anchors.fill: parent
+        anchors.centerIn: parent
+        width: parent.width * 0.9
+        height: parent.height * 0.9
         opacity: 1.0
         color: 'transparent'
         plugin: plugins.osm
-        center: QtPositioning.coordinate(45,10)
         activeMapType: map.supportedMapTypes[0]
+
+//        center: QtPositioning.coordinate(59.91, 10.75) // Oslo
+//        zoomLevel: 14
+
+        center: QtPositioning.coordinate(45,10)
         zoomLevel: 4
+
         copyrightsVisible: win.copyVisible
 
         MapRectangle {
             topLeft: QtPositioning.coordinate(40, 10)
             bottomRight: QtPositioning.coordinate(38, 13)
             color: "deepskyblue"
-            x: 40
+            //x: 40
             //width: 300
+
+           MouseArea {
+              anchors.fill: parent
+              drag.target: parent
+           }
         }
+
+        MapCircle {
+            center: QtPositioning.coordinate(40, 10)
+            radius: 100000
+            color: "deepskyblue"
+            //x: 40
+            //width: 300
+
+           MouseArea {
+              anchors.fill: parent
+              drag.target: parent
+           }
+        }
+
+        MapPolygon {
+            id: poly
+            objectName: "bloodyPoly"
+
+            color: "red"
+            path: [
+                { latitude: 45, longitude: -60 },
+                { latitude: 45, longitude: 60 },
+                { latitude: -45, longitude: 60 },
+                { latitude: -45, longitude: -60 }
+            ]
+
+            MouseArea{
+                id:ma
+                objectName: "maPoly"
+                anchors.fill: parent
+                drag.target: parent
+            }
+        }
+
+        MapPolygon {
+            id: poly2
+
+
+            color: "green"
+            path: [
+                { latitude: 45, longitude: -60 },
+                { latitude: 45, longitude: -50 },
+                { latitude: 35, longitude: -50 },
+                { latitude: 35, longitude: -60 }
+            ]
+
+            MouseArea{
+                id:ma2
+                objectName: "maPoly"
+                anchors.fill: parent
+                drag.target: parent
+            }
+        }
+
+        function printCoords()
+        {
+            return;
+            var coord1 = map.toCoordinate(Qt.point(width/2, height/2))
+            var coord2 = map.toCoordinate(Qt.point(width/2, 0))
+            var coord3 = map.toCoordinate(Qt.point(width/2, -200), false)
+            console.log(coord1.latitude, coord1.longitude)
+            console.log(coord2.latitude, coord2.longitude)
+            console.log(coord3.latitude, coord3.longitude)
+        }
+
+        onMapReadyChanged: {
+            console.log("MAPREADY")
+            printCoords()
+        }
+
+        onTiltChanged: {
+            printCoords()
+        }
+
+
+//        MapRectangle {
+//           id: blueRect_
+//           topLeft: QtPositioning.coordinate(59.91, 10.75)
+//           bottomRight: QtPositioning.coordinate(59.90, 10.76) // QtPositioning.coordinate(topLeft.latitude - 0.01, topLeft.longitude + 0.01)
+//           color: "blue"
+
+//           MouseArea {
+//              anchors.fill: parent
+//              drag.target: parent
+//           }
+
+////           onXChanged: {
+////               console.log( "blue", x, y, width, height, topLeft.latitude, topLeft.longitude, bottomRight.latitude, bottomRight.longitude )
+////           }
+
+////           onYChanged: {
+////              console.log( "blue", x, y, width, height, topLeft.latitude, topLeft.longitude, bottomRight.latitude, bottomRight.longitude )
+////           }
+//        }
+
+
     }
 }

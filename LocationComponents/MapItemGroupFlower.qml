@@ -83,14 +83,16 @@ import QtLocation 5.9
             line.width: 3
 
             function populateBorder() {
-                groupPolyline.path = [] // clearing the path
+                //groupPolyline.path = [] // clearing the path
+                var newPath = []
                 var waveLength = 8.0;
                 var waveAmplitude = groupCircle.radius * parent.borderHeightPct;
                 for (var i=0; i <= 360; i++) {
                     var wavePhase = (i/360.0 * 2.0 * Math.PI )* waveLength
                     var waveHeight = (Math.cos(wavePhase) + 1.0) / 2.0
-                    groupPolyline.addCoordinate(groupCircle.center.atDistanceAndAzimuth(groupCircle.radius + waveAmplitude * waveHeight , i))
+                    newPath.push(groupCircle.center.atDistanceAndAzimuth(groupCircle.radius + waveAmplitude * waveHeight , i))
                 }
+                groupPolyline.path = newPath
             }
 
             Component.onCompleted: {
