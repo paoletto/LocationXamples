@@ -26,6 +26,7 @@ MapPluginHere \
 MapPluginHereHiDpi \
 MapPluginMapbox \
 MapPluginMapboxGL \
+MapPluginMapboxGLEmpty \
 MapPluginMapboxGLOffline \
 MapParametersMapboxGL \
 MapPluginMapboxGLExp \

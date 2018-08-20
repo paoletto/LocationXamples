@@ -98,7 +98,7 @@ Window {
 
         property matrix4x4 proj: Qt.matrix4x4()
         function updateProj() {
-            map.proj = map.projectionTransformation()
+//            map.proj = map.projectionTransformation()
             //console.log(map.proj)
         }
 
@@ -117,37 +117,37 @@ Window {
 
 
 
-        Rectangle {
-            x: 0.333333
-            y: 0.359725
-            width: 0.333333
-            height: 0.28055
+//        Rectangle {
+//            x: 0.333333
+//            y: 0.359725
+//            width: 0.333333
+//            height: 0.28055
 
-            id: rect
-            objectName: "rect"
-            color: "green"
+//            id: rect
+//            objectName: "rect"
+//            color: "green"
 
-            transform: Matrix4x4 {
-                matrix: map.proj
-            }
-
-            onXChanged: printSize(rect)
-            onWidthChanged: printSize(rect)
-
-//            MouseArea{
-//                id:maRect
-//                objectName: "maRect"
-//                anchors.fill: parent
-//                drag.target: parent
+//            transform: Matrix4x4 {
+//                matrix: map.proj
 //            }
-        }
+
+//            onXChanged: printSize(rect)
+//            onWidthChanged: printSize(rect)
+
+////            MouseArea{
+////                id:maRect
+////                objectName: "maRect"
+////                anchors.fill: parent
+////                drag.target: parent
+////            }
+//        }
 
         MapPolygon {
             id: poly
             objectName: "bloodyPoly"
-            transform: Matrix4x4 {
-                matrix: map.proj
-            }
+//            transform: Matrix4x4 {
+//                matrix: map.proj
+//            }
 
             color: "red"
             path: [

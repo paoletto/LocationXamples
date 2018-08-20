@@ -50,36 +50,56 @@ Window {
     visible: true
     width: 640
     height: 640
-    color: 'red'
+//    color: 'transparent'
 
-//    GeoservicePlugins {
-//        id: plugins
-//    }
+
+    property var boundary : [QtPositioning.coordinate( 10, -10),
+                             QtPositioning.coordinate( 10,  10),
+                             QtPositioning.coordinate(-10,  10),
+                             QtPositioning.coordinate(-10, -10)]
+
+    property var hole1 : [QtPositioning.coordinate( 5, -5),
+                QtPositioning.coordinate( 5,  5),
+                QtPositioning.coordinate(-5,  5),
+                QtPositioning.coordinate(-5, -5)]
+
+    property var hole2 : [QtPositioning.coordinate( 7, 7),
+                QtPositioning.coordinate( 7, 8),
+                QtPositioning.coordinate(8,  8),
+                QtPositioning.coordinate(8, 7)]
+
+    property var holes : [hole1, hole2]
+
+    property int baseZ: 2
+    Map {
+        id: baseMap
+        anchors.fill: parent
+        plugin: Plugin { name: "osm" }
+        gesture.enabled: false
+        center: map.center
+        zoomLevel: map.zoomLevel
+        tilt: map.tilt
+        bearing: map.bearing
+        fieldOfView: map.fieldOfView
+        z: baseZ
+    }
 
     MapWithSliders {
         id: map
         anchors.fill: parent
         opacity: 1
+        z: baseZ + 1
         color: 'transparent'
-        //plugin: plugins.mapboxgl
         plugin: Plugin {
             name: "mapboxgl"
-             PluginParameter { name: "mapboxgl.mapping.use_fbo"; value: "true"}
              PluginParameter {
                  name: "mapboxgl.mapping.additional_style_urls"
-//                 value: "https://www.arcgis.com/sharing/rest/content/items/4cf7e1fb9f254dcda9c8fbadb15cf0f8/resources/styles/root.json?f=json"
-                //value: "https://raw.githubusercontent.com/openmaptiles/klokantech-terrain-gl-style/master/style.json"
-                //value: "mapbox://openmaptiles.4qljc88t"
-                 value: "https://openmaptiles.github.io/klokantech-terrain-gl-style/style-cdn.json"
-                 //value: "https://openmaptiles.github.io/toner-gl-style/style-cdn.json"
-//                 value: "https://openmaptiles.github.io/osm-bright-gl-style/style-cdn.json"
-//                 value: "https://www.arcgis.com/sharing/rest/content/items/30d6b8271e1849cd9c3042060001f425/resources/styles/root.json?f=json"
-//                 value: "https://api.tomtom.com/maps-sdk-js/4.31.5/examples/sdk/styles/basic_main.json"
+                 value: "qrc:/empty.json"
              }
         }
         center: QtPositioning.coordinate(45,10)
         activeMapType: map.supportedMapTypes[0]
-        zoomLevel: 4
+        zoomLevel: 3
 
         onMapReadyChanged: {
             for (var i = 0; i < map.supportedMapTypes.length; i++) {
@@ -87,52 +107,54 @@ Window {
             }
         }
 
-////        MapParameter {
-////            type: 'source'
+        MapPolyline {
+            id: timeline
+            line.color: "red"
+            line.width: 4
+            path: [
+                { latitude: 90, longitude: 180 },
+                { latitude: -90, longitude: 180 }
+            ]
+        }
 
-////            property var name: "routeSource"
-////            property var sourceType: "geojson"
-////            property var data: "{ 'type': 'FeatureCollection', 'features':
-////                [{ 'type': 'Feature', 'properties': {}, 'geometry': {
-////                'type': 'LineString', 'coordinates': [[ 24.934938848018646,
-////                60.16830257086771 ], [ 24.943315386772156, 60.16227776476442 ]]}}]}"
-////        }
-
-//        MapParameter {
-//            type: "source"
-
-//            property var name: "routeSource"
-//            property var sourceType: "geojson"
-//            property var data: '{ "type": "FeatureCollection", "features": [{ "type": "Feature", "properties": {}, "geometry": { "type": "LineString", "coordinates": [[ 24.934938848018646, 60.16830257086771 ], [ 44.943315386772156, 40.16227776476442 ]]}}]}'
-//        }
+        MapPolygon {
+            id: holed
+            color: "firebrick"
+            geoShape: QtPositioning.polygon(boundary, holes)
+        }
 
 
-//        MapParameter {
-//            type: "layer"
+        MapPolygon {
+            id: poly1
+            color: "red"
+            path: [
+                { latitude: 45, longitude: 170 },
+                { latitude: 55, longitude: -175 },
+                { latitude: 45, longitude: -160 },
+                { latitude: 35, longitude: 178 }
+            ]
+        }
 
-//            property var name: "route"
-//            property var layerType: "line"
-//            property var source: "routeSource"
+        MapPolygon {
+            id: poly2
+            color: "green"
+            path: [
+                { latitude: -45, longitude: -170 },
+                { latitude: -55, longitude: -155 },
+                { latitude: -45, longitude: -130 },
+                { latitude: -35, longitude: -155 }
+            ]
+        }
 
-//            // Draw under the first road label layer
-//            // of the mapbox-streets style.
-//            property var before: "road-label-small"
-//        }
-
-//        MapParameter {
-//            type: "paint"
-
-//            property var layer: "route"
-//            property var lineColor: "blue"
-//            property var lineWidth: 8.0
-//        }
-
-//        MapParameter {
-//            type: "layout"
-
-//            property var layer: "route"
-//            property var lineJoin: "round"
-//            property var lineCap: "round"
-//        }
+        MapPolygon {
+            id: poly3
+            color: "deepskyblue"
+            path: [
+                { latitude: 65, longitude: -20 },
+                { latitude: 75, longitude: 140 },
+                { latitude: 65, longitude: 80 },
+                { latitude: 55, longitude: -30 }
+            ]
+        }
     }
 }

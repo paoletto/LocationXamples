@@ -104,15 +104,32 @@ Window {
         }
     }
 
+    //    Map {
+    //        id: baseMap
+    //        anchors.fill: parent
+    //        opacity: 1.0
+    //        color: 'transparent'
+    //        plugin: plugins.osm
+    //        gesture.enabled: false
+    //        center: map.center
+    //        tilt: map.tilt
+    //        bearing: map.bearing
+    //        fieldOfView: map.fieldOfView
+    //        zoomLevel: map.zoomLevel
+    //        visibleArea: map.visibleArea
+    //    }
+
     MapWithSliders {
+//        z: baseMap.z + 1
         id: map
         anchors.fill: parent
         opacity: 1.0
         color: 'transparent'
-//        plugin: plugins.osm
-        plugin: Plugin {name: "mapboxgl" }
+        plugin: plugins.osm
+//        plugin: Plugin {name: "mapboxgl" }
         center: QtPositioning.coordinate(45,10)
         zoomLevel: 4.0
+        fieldOfView: 36.87
         //visibleArea : Qt.rect(128,128,384,384)
 
         function coord(pt) {

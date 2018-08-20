@@ -38,76 +38,18 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.7
-import QtQuick.Window 2.2
-import QtQuick.Controls 1.4
-import QtPositioning 5.6
-import QtLocation 5.11
-import LocationComponents 1.0
+#include "locationcomponents.h"
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
 
-Window {
-    id: win
-    visible: true
-    width: 640
-    height: 640
-    property var copyVisible : false
+int main(int argc, char *argv[])
+{
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication app(argc, argv);
 
-    GeoservicePlugins {
-        id: plugins
-    }
+    QQmlApplicationEngine engine;
+    registerLocationComponents(engine);
+    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
-    MapWithSliders {
-        id: map
-        anchors.fill: parent
-        opacity: 1.0
-        color: 'transparent'
-        plugin: plugins.osm
-        //plugin: Plugin {             name: "tilting";     }
-
-        center: QtPositioning.coordinate(45,10)
-        activeMapType: map.supportedMapTypes[0]
-        zoomLevel: 3
-        copyrightsVisible: win.copyVisible
-
-        MapPolylineUSA {
-        //MapPolylineReal {
-        //LongPoly {
-            opacity: 0.3
-            line.width: 16
-//            layer.enabled: true
-
-            DynamicParameter {
-                id: usaLineStyle
-                type: "lineStyle"
-                property var lineCap: Qt.RoundCap // Qt.FlatCap, Qt.SquareCap, Qt.RoundCap
-                property var pen: Qt.SolidLine // Qt.SolidLine, Qt.DashLine, Qt.DotLine, Qt.DashDotLine, or Qt.DashDotDotLine.
-            }
-        }
-
-        MapPolyline {
-            line.width: 3
-            line.color: 'firebrick'
-            path: [
-                { latitude: 0, longitude: -89.0 },
-                { latitude: 0, longitude: 89.0 }
-            ]
-
-            DynamicParameter {
-                type: "lineStyle"
-                property var lineCap: Qt.SquareCap // Qt.FlatCap, Qt.SquareCap, Qt.RoundCap
-                property var pen: Qt.DashLine // Qt.SolidLine, Qt.DashLine, Qt.DotLine, Qt.DashDotLine, or Qt.DashDotDotLine.
-            }
-        }
-    }
-
-    Timer {
-        id: timer
-        interval: 3000
-        running: true
-        repeat: false
-        onTriggered: {
-            usaLineStyle.pen = Qt.DashLine
-            usaLineStyle.lineCap = Qt.FlatCap
-        }
-    }
+    return app.exec();
 }

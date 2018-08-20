@@ -61,6 +61,10 @@ import QtLocation 5.9
                 anchors.fill: parent
                 drag.target: parent
                 id: maItemGroup
+
+                onDoubleClicked: {
+                    console.log("MapItemGroup.mainCircle dbl clicked")
+                }
             }
         }
 
